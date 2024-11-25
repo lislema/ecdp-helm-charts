@@ -1,0 +1,232 @@
+#This section includes user information passed by the backend API
+#Currently it only includes uuid: but may be expanded later
+#uuid uniquely represents a user in the system and passing it as
+#a label in the k8s objects allows effective filtering per user.
+userdata:
+  uuid: ""
+  releaseAlias: ""
+  sharing: "private"
+
+#
+oauth2Proxy:
+  enabled: true
+  config:
+    # clientId: "" # Deployed in K8s secret by backend
+    # clientSecret: "" # Deployed in K8s secret by backend
+    cookieName: "" # Optional, defaults to .releaseName-oauth2-proxy
+    # cookieSecret: "" # Automatically generated
+    cookieExpire: "1h0m0s"
+    cookieSecure: "true"
+    reverseProxy: "true"
+    httpAddress: "" # Optional, defaults to http://127.0.0.1:4180
+    upstream: "" # Optional, defaults to http://127.0.0.1:54321
+    provider: "keycloak-oidc"
+    # oidcIssuerUrl: https://keycloak.example.com/realms/<realm-name>" # Deployed in K8s secret by backend
+    # redirectUrl: "" # Optional, set automatically
+    codeChallengeMethod: "S256" # Recommended, defaults to S256
+    # skipProviderButton: "true" # Defaults to true
+    emailDomain: "*"
+    insecureOidcAllowUnverifiedEmail: "true"
+    # allowedRoles: ["admin", "dsl-admin"] # Deployed in K8s secret by backend
+    # allowedGroups: [] # in K8s secret by backend
+  container:
+    image:
+      # repository: quay.io/oauth2-proxy/oauth2-proxy
+      # tag: v7.6.0
+      repository: 612470128176.dkr.ecr.eu-west-1.amazonaws.com/oauth2-proxy
+      tag: rel-agnostic-oauth2-proxy-main-v7.6.0
+      pullPolicy: IfNotPresent
+    port: 4180
+    args: []
+      # - "--key=value"
+    env: []
+      # - name: name
+      #   value: value
+    resources:
+      # limits:
+      #   cpu: 250m
+      #   memory: 250Mi
+      requests:
+        cpu: 250m
+        memory: 250Mi
+
+image:
+  replicaCount: 1
+  repository: 612470128176.dkr.ecr.eu-west-1.amazonaws.com/catalog-doccano-doccano
+  tag: "1.8.4"
+  pullPolicy: IfNotPresent
+  name: doccano
+  deployRegistry: false
+  imagePullSecrets: registrysecret
+  dataSecret: |-
+    {"auths":{"registry.localhost":{"password":"","username":""}}}
+
+env:
+  ADMIN_EMAIL: "example@example.com"
+  ADMIN_USERNAME: "admin"
+
+deploySecret: true
+ADMIN_PASSWORD: ""
+
+resources:
+  # limits = requests
+  # limits:
+  #  cpu: 500m
+  #  memory: 500Mi
+  requests:
+    cpu: 500m
+    memory: 500Mi
+
+service:
+  type: ClusterIP
+  targetPort: 8000
+  protocol: TCP
+
+ingress:
+  enabled: true
+  ingressClassName: alb
+  annotations:
+    alb.ingress.kubernetes.io/group.name: doccano-group
+    alb.ingress.kubernetes.io/manage-backend-security-group-rules: "true"
+    alb.ingress.kubernetes.io/security-groups: alb-inbound-cidrs-sg
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/healthcheck-path: /ping
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}, {"HTTP":80}]'
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: "40"
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: "5"
+    alb.ingress.kubernetes.io/healthy-threshold-count: "2"
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: "2"
+  hosts:
+    - host: .example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  # path: /
+  # hostnames:
+  # - example.com
+  # tls:
+  # - hosts:
+  #   - example.com
+  #   secretName: doccano
+
+persistence:
+  enabled: true
+  existingClaim: false
+  size: 10Gi
+  accessMode: "ReadWriteOnce"
+  volumeName: "data"
+  mountPath: /data
+  # annotations:
+    # helm.sh/resource-policy: keep
+  storageClass: "dsl-kms-block-storage-class"
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  name: ""
+
+nodeSelector:
+  workloads: catalog
+tolerations:
+- key: "workloads"
+  operator: "Equal"
+  value: "catalog"
+  effect: "NoSchedule"
+affinity: {}
+
+podSecurityContext:
+  fsGroup: 1000
+
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop: ["ALL"]
+  runAsUser: 1000
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+
+postgresql:
+  installAsDependency: true
+  image:
+    registry: "612470128176.dkr.ecr.eu-west-1.amazonaws.com"
+    repository: "catalog-doccano-dependencies-postgresql"
+    tag: "rel-agnostic-11.14.0-debian-10-r28"
+    # tag: 11.14.0-debian-10-r28
+  global:
+    postgresql:
+      auth:
+        database: doccano
+        username: doccano
+        password: ""
+  ## PostgreSQL Primary parameters
+  primary:
+    ## Pod Security Context
+    ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+    ## @param primary.podSecurityContext.enabled Enable security context
+    ## @param primary.podSecurityContext.fsGroup Group ID for the pod
+    ##
+    podSecurityContext:
+      enabled: true
+      fsGroup: 1001
+    ## Container Security Context
+    ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+    ## @param primary.containerSecurityContext.enabled Enable container security context
+    ## @param primary.containerSecurityContext.runAsUser User ID for the container
+    ##
+    containerSecurityContext:
+      enabled: true
+      runAsUser: 1001
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+    ##
+    ## Persistent Volume Storage configuration.
+    ## ref: https://kubernetes.io/docs/user-guide/persistent-volumes
+    persistence:
+      ##
+      ## Enable PostgreSQL persistence using Persistent Volume Claims.
+      enabled: true
+      ##
+      ## Persistent class
+      storageClass: dsl-kms-block-storage-class
+      ##
+      ## Access modes:
+      accessModes:
+        - ReadWriteOnce
+      ## 
+      ## PVC Storage Request for PostgreSQL volume
+      size: 3Gi
+    ## PostgreSQL port
+    service:
+      ports:
+        postgresql: "5432"
+    resources:
+      requests:
+        cpu: 500m
+        memory: 500Mi
+      limits:
+        cpu: 500m
+        memory: 500Mi
+    nodeSelector:
+      workloads: catalog
+    tolerations:
+    - key: "workloads"
+      operator: "Equal"
+      value: "catalog"
+      effect: "NoSchedule"
+  readReplicas:
+    nodeSelector:
+      workloads: catalog
+    tolerations:
+    - key: "workloads"
+      operator: "Equal"
+      value: "catalog"
+      effect: "NoSchedule"

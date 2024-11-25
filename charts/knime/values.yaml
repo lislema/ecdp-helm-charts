@@ -1,0 +1,159 @@
+# Default values for knime.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  # repository: openkbs/knime-vnc-docker #https://github.com/DrSnowbird/knime-vnc-docker
+  # repository: https://github.com/elestio/docker-desktop-vnc-knime
+  repository: 612470128176.dkr.ecr.eu-west-1.amazonaws.com/catalog-knime-docker-desktop-vnc-knime
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "rel-agnostic-knime-5.3.3"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+userdata:
+  uuid: ""
+  releaseAlias: ""
+  sharing: "private"
+
+#
+oauth2Proxy:
+  enabled: true
+  config:
+    # clientId: "" # Deployed in K8s secret by backend
+    # clientSecret: "" # Deployed in K8s secret by backend
+    cookieName: "" # Optional, defaults to .releaseName-oauth2-proxy
+    # cookieSecret: "" # Automatically generated
+    cookieExpire: "1h0m0s"
+    cookieSecure: "true"
+    reverseProxy: "true"
+    httpAddress: "" # Optional, defaults to http://127.0.0.1:4180
+    upstream: "" # Optional, defaults to http://127.0.0.1:54321
+    provider: "keycloak-oidc"
+    # oidcIssuerUrl: https://keycloak.example.com/realms/<realm-name>" # Deployed in K8s secret by backend
+    # redirectUrl: "" # Optional, set automatically
+    codeChallengeMethod: "S256" # Recommended, defaults to S256
+    # skipProviderButton: "true" # Defaults to true
+    emailDomain: "*"
+    insecureOidcAllowUnverifiedEmail: "true"
+    # allowedRoles: ["admin", "dsl-admin"] # Deployed in K8s secret by backend
+    # allowedGroups: [] # in K8s secret by backend
+  container:
+    image:
+      # repository: quay.io/oauth2-proxy/oauth2-proxy
+      # tag: v7.6.0
+      repository: 612470128176.dkr.ecr.eu-west-1.amazonaws.com/oauth2-proxy
+      tag: rel-agnostic-oauth2-proxy-main-v7.6.0
+      pullPolicy: IfNotPresent
+    port: 4180
+    args: []
+      # - "--key=value"
+    env: []
+      # - name: name
+      #   value: value
+    resources:
+      # limits:
+      #   cpu: 250m
+      #   memory: 250Mi
+      requests:
+        cpu: 250m
+        memory: 250Mi
+
+security:
+  username: "knime"
+  password: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  {}
+  # fsGroup: 2000
+
+securityContext:
+  {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 3000
+  containerPort: 3000
+
+ingress:
+  enabled: true
+  className: "alb"
+  annotations:
+    alb.ingress.kubernetes.io/group.name: knime-5-3-3-group
+    alb.ingress.kubernetes.io/manage-backend-security-group-rules: "true"
+    alb.ingress.kubernetes.io/security-groups: alb-inbound-cidrs-sg
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/healthcheck-path: /ping
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}, {"HTTP":80}]'
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: "40"
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: "5"
+    alb.ingress.kubernetes.io/healthy-threshold-count: "2"
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: "2"
+  hosts:
+    - host: example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 350Mi
+    storage: 6Gi
+
+#Comments on storage
+storage:
+  efsEnabled: true
+  efsPVClaimName: ""
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector:
+  workloads: catalog
+
+tolerations:
+  - key: "workloads"
+    operator: "Equal"
+    value: "catalog"
+    effect: "NoSchedule"
+
+affinity: {}
+
+livenessProbe:
+  initialDelaySeconds: 75
+
+readinessProbe:
+  initialDelaySeconds: 75

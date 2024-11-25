@@ -1,0 +1,805 @@
+{
+    "2.0.11": [
+        {
+            "name": "doccano-custom",
+            "sizingName": "Custom",
+            "values": [
+                {
+                    "name": "Doccano Admin Email",
+                    "type": "string",
+                    "description": "Administrator Email for Doccano.",
+                    "path": "env.ADMIN_EMAIL",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": false,
+                    "required": true,
+                    "value": null,
+                    "tags": []
+                },
+
+                {
+                    "name": "Doccano Admin Username",
+                    "type": "string",
+                    "description": "Administrator Username for accessing Doccano.",
+                    "path": "env.ADMIN_USERNAME",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "admin",
+                    "tags": []
+                },
+                {
+                    "name": "Doccano Admin Password",
+                    "type": "string",
+                    "description": "Administrator Password for accessing Doccano",
+                    "path": "ADMIN_PASSWORD",
+                    "inputType": "password",
+                    "inputDisabled": true,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": null,
+                    "tags": []
+                },
+                {
+                    "name": "Permissions",
+                    "type": "string",
+                    "description": "AWS IRSA ARN for the service and all its components",
+                    "path": "serviceAccount.annotations",
+                    "inputType": "string",
+                    "inputDisabled": false,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": null,
+                    "tags": [
+                      "security.permissions"
+                    ]
+                },
+                {
+                    "name": "CPU Resource",
+                    "type": "string",
+                    "description": "CPU resources to allocate to the pod, unit is MilliCPUs (m)",
+                    "path": "resources.requests.cpu",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": false,
+                    "required": true,
+                    "value": "m",
+                    "tags": [
+                        "allocation.cpu"
+                    ]
+                },
+                {
+                    "name": "Memory Resource",
+                    "type": "string",
+                    "description": "Memory resources to allocate to the pod, unit is Mebibytes (Mi)",
+                    "path": "resources.requests.memory",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": false,
+                    "required": true,
+                    "value": "Mi",
+                    "tags": [
+                        "allocation.memory"
+                    ]
+                },
+                {
+                    "name": "Oauth2 Proxy CPU Resource",
+                    "type": "string",
+                    "description": "CPU resources to allocate to the oauth2-proxy sidecar container, unit is MilliCPUs (m)",
+                    "path": "oauth2Proxy.container.resources.requests.cpu",
+                    "inputType": "string",
+                    "inputDisabled": false,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": "m",
+                    "tags": [
+                        "allocation.cpu"
+                    ]
+                },
+                {
+                    "name": "Oauth2 Proxy Memory Resource",
+                    "type": "string",
+                    "description": "Memory resources to allocate to the oauth2-proxy sidecar container, unit is Mebibytes (Mi)",
+                    "path": "oauth2Proxy.container.resources.requests.memory",
+                    "inputType": "string",
+                    "inputDisabled": false,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": "Mi",
+                    "tags": [
+                        "allocation.memory"
+                    ]
+                },
+                {
+                    "name": "Storage Resource",
+                    "type": "string",
+                    "description": "Storage resources to allocate to the pod, unit is Gibibytes (Gi)",
+                    "path": "persistence.size",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": false,
+                    "required": true,
+                    "value": "5Gi",
+                    "tags": []
+                },
+                {
+                    "name": "Block volume storage class",
+                    "type": "string",
+                    "description": "Kube block volume storage class",
+                    "path": "persistence.storageClass",
+                    "inputType": "string",
+                    "inputHidden": true,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "dsl-kms-block-storage-class",
+                    "tags": []
+                },
+                {
+                    "name": "Postgresql block volume storage class",
+                    "type": "string",
+                    "description": "Kube block volume storage class for Postgresql chart dependency",
+                    "path": "postgresql.persistence.storageClass",
+                    "inputType": "string",
+                    "inputHidden": true,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "dsl-kms-block-storage-class",
+                    "tags": []
+                },
+                {
+                    "name": "Postgresql Doccano Password",
+                    "type": "string",
+                    "description": "Postgresql Password for postgres user",
+                    "path": "postgresql.global.postgresql.auth.password",
+                    "inputType": "string",
+                    "inputHidden": true,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "",
+                    "tags": []
+                }
+            ]
+        },
+        {
+            "name": "doccano-micro",
+            "sizingName": "Micro",
+            "values": [
+                {
+                    "name": "Doccano Admin Email",
+                    "type": "string",
+                    "description": "Administrator Email for Doccano.",
+                    "path": "env.ADMIN_EMAIL",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": false,
+                    "required": true,
+                    "value": null,
+                    "tags": []
+                },
+                {
+                    "name": "Doccano Admin Username",
+                    "type": "string",
+                    "description": "Administrator Username for accessing Doccano.",
+                    "path": "env.ADMIN_USERNAME",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "admin",
+                    "tags": []
+                },
+                {
+                    "name": "Doccano Admin Password",
+                    "type": "string",
+                    "description": "Administrator Password for accessing Doccano",
+                    "path": "ADMIN_PASSWORD",
+                    "inputType": "password",
+                    "inputDisabled": true,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": null,
+                    "tags": []
+                },
+                {
+                    "name": "Permissions",
+                    "type": "string",
+                    "description": "AWS IRSA ARN for the service and all its components",
+                    "path": "serviceAccount.annotations",
+                    "inputType": "string",
+                    "inputDisabled": false,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": null,
+                    "tags": [
+                      "security.permissions"
+                    ]
+                },
+                {
+                    "name": "CPU Resource",
+                    "type": "string",
+                    "description": "CPU resources to allocate to the pod, unit is MilliCPUs (m)",
+                    "path": "resources.requests.cpu",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "500m",
+                    "tags": [
+                        "allocation.cpu"
+                    ]
+                },
+                {
+                    "name": "Memory Resource",
+                    "type": "string",
+                    "description": "Memory resources to allocate to the pod, unit is Mebibytes (Mi)",
+                    "path": "resources.requests.memory",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "500Mi",
+                    "tags": [
+                        "allocation.memory"
+                    ]
+                },
+                {
+                    "name": "Oauth2 Proxy CPU Resource",
+                    "type": "string",
+                    "description": "CPU resources to allocate to the oauth2-proxy sidecar container, unit is MilliCPUs (m)",
+                    "path": "oauth2Proxy.container.resources.requests.cpu",
+                    "inputType": "string",
+                    "inputDisabled": true,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": "250m",
+                    "tags": [
+                        "allocation.cpu"
+                    ]
+                },
+                {
+                    "name": "Oauth2 Proxy Memory Resource",
+                    "type": "string",
+                    "description": "Memory resources to allocate to the oauth2-proxy sidecar container, unit is Mebibytes (Mi)",
+                    "path": "oauth2Proxy.container.resources.requests.memory",
+                    "inputType": "string",
+                    "inputDisabled": true,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": "250Mi",
+                    "tags": [
+                        "allocation.memory"
+                    ]
+                },
+                {
+                    "name": "Storage Resource",
+                    "type": "string",
+                    "description": "Storage resources to allocate to the pod, unit is Gibibytes (Gi)",
+                    "path": "persistence.size",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": false,
+                    "required": true,
+                    "value": "5Gi",
+                    "tags": []
+                },
+                {
+                    "name": "Block volume storage class",
+                    "type": "string",
+                    "description": "Kube block volume storage class",
+                    "path": "persistence.storageClass",
+                    "inputType": "string",
+                    "inputHidden": true,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "dsl-kms-block-storage-class",
+                    "tags": []
+                },
+                {
+                    "name": "Postgresql block volume storage class",
+                    "type": "string",
+                    "description": "Kube block volume storage class for Postgresql chart dependency",
+                    "path": "postgresql.persistence.storageClass",
+                    "inputType": "string",
+                    "inputHidden": true,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "dsl-kms-block-storage-class",
+                    "tags": []
+                },
+                {
+                    "name": "Postgresql Doccano Password",
+                    "type": "string",
+                    "description": "Postgresql Password for postgres user",
+                    "path": "postgresql.global.postgresql.auth.password",
+                    "inputType": "string",
+                    "inputHidden": true,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "",
+                    "tags": []
+                }
+            ]
+        },
+        {
+            "name": "doccano-small",
+            "sizingName": "Small",
+            "values": [
+                {
+                    "name": "Doccano Admin Email",
+                    "type": "string",
+                    "description": "Administrator Email for Doccano.",
+                    "path": "env.ADMIN_EMAIL",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": false,
+                    "required": true,
+                    "value": null,
+                    "tags": []
+                },
+                {
+                    "name": "Doccano Admin Username",
+                    "type": "string",
+                    "description": "Administrator Username for accessing Doccano.",
+                    "path": "env.ADMIN_USERNAME",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "admin",
+                    "tags": []
+                },
+                {
+                    "name": "Doccano Admin Password",
+                    "type": "string",
+                    "description": "Administrator Password for accessing Doccano",
+                    "path": "ADMIN_PASSWORD",
+                    "inputType": "password",
+                    "inputDisabled": true,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": null,
+                    "tags": []
+                },
+                {
+                    "name": "Permissions",
+                    "type": "string",
+                    "description": "AWS IRSA ARN for the service and all its components",
+                    "path": "serviceAccount.annotations",
+                    "inputType": "string",
+                    "inputDisabled": false,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": null,
+                    "tags": [
+                      "security.permissions"
+                    ]
+                },
+                {
+                    "name": "CPU Resource",
+                    "type": "string",
+                    "description": "CPU resources to allocate to the pod, unit is MilliCPUs (m)",
+                    "path": "resources.requests.cpu",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "1000m",
+                    "tags": [
+                        "allocation.cpu"
+                    ]
+                },
+                {
+                    "name": "Memory Resource",
+                    "type": "string",
+                    "description": "Memory resources to allocate to the pod, unit is Mebibytes (Mi)",
+                    "path": "resources.requests.memory",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "2000Mi",
+                    "tags": [
+                        "allocation.memory"
+                    ]
+                },
+                {
+                    "name": "Oauth2 Proxy CPU Resource",
+                    "type": "string",
+                    "description": "CPU resources to allocate to the oauth2-proxy sidecar container, unit is MilliCPUs (m)",
+                    "path": "oauth2Proxy.container.resources.requests.cpu",
+                    "inputType": "string",
+                    "inputDisabled": true,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": "250m",
+                    "tags": [
+                        "allocation.cpu"
+                    ]
+                },
+                {
+                    "name": "Oauth2 Proxy Memory Resource",
+                    "type": "string",
+                    "description": "Memory resources to allocate to the oauth2-proxy sidecar container, unit is Mebibytes (Mi)",
+                    "path": "oauth2Proxy.container.resources.requests.memory",
+                    "inputType": "string",
+                    "inputDisabled": true,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": "500Mi",
+                    "tags": [
+                        "allocation.memory"
+                    ]
+                },
+                {
+                    "name": "Storage Resource",
+                    "type": "string",
+                    "description": "Storage resources to allocate to the pod, unit is Gibibytes (Gi)",
+                    "path": "persistence.size",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": false,
+                    "required": true,
+                    "value": "5Gi",
+                    "tags": []
+                },
+                {
+                    "name": "Block volume storage class",
+                    "type": "string",
+                    "description": "Kube block volume storage class",
+                    "path": "persistence.storageClass",
+                    "inputType": "string",
+                    "inputHidden": true,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "dsl-kms-block-storage-class",
+                    "tags": []
+                },
+                {
+                    "name": "Postgresql block volume storage class",
+                    "type": "string",
+                    "description": "Kube block volume storage class for Postgresql chart dependency",
+                    "path": "postgresql.persistence.storageClass",
+                    "inputType": "string",
+                    "inputHidden": true,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "dsl-kms-block-storage-class",
+                    "tags": []
+                },
+                {
+                    "name": "Postgresql Doccano Password",
+                    "type": "string",
+                    "description": "Postgresql Password for postgres user",
+                    "path": "postgresql.global.postgresql.auth.password",
+                    "inputType": "string",
+                    "inputHidden": true,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "",
+                    "tags": []
+                }
+            ]
+        },
+        {
+            "name": "doccano-medium",
+            "sizingName": "Medium",
+            "values": [
+                {
+                    "name": "Doccano Admin Email",
+                    "type": "string",
+                    "description": "Administrator Email for Doccano.",
+                    "path": "env.ADMIN_EMAIL",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": false,
+                    "required": true,
+                    "value": null,
+                    "tags": []
+                },
+                {
+                    "name": "Doccano Admin Username",
+                    "type": "string",
+                    "description": "Administrator Username for accessing Doccano.",
+                    "path": "env.ADMIN_USERNAME",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "admin",
+                    "tags": []
+                },
+                {
+                    "name": "Doccano Admin Password",
+                    "type": "string",
+                    "description": "Administrator Password for accessing Doccano",
+                    "path": "ADMIN_PASSWORD",
+                    "inputType": "password",
+                    "inputDisabled": true,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": null,
+                    "tags": []
+                },
+                {
+                    "name": "Permissions",
+                    "type": "string",
+                    "description": "AWS IRSA ARN for the service and all its components",
+                    "path": "serviceAccount.annotations",
+                    "inputType": "string",
+                    "inputDisabled": false,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": null,
+                    "tags": [
+                      "security.permissions"
+                    ]
+                },
+                {
+                    "name": "CPU Resource",
+                    "type": "string",
+                    "description": "CPU resources to allocate to the pod, unit is MilliCPUs (m)",
+                    "path": "resources.requests.cpu",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "2000m",
+                    "tags": [
+                        "allocation.cpu"
+                    ]
+                },
+                {
+                    "name": "Memory Resource",
+                    "type": "string",
+                    "description": "Memory resources to allocate to the pod, unit is Mebibytes (Mi)",
+                    "path": "resources.requests.memory",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "4000Mi",
+                    "tags": [
+                        "allocation.memory"
+                    ]
+                },
+                {
+                    "name": "Oauth2 Proxy CPU Resource",
+                    "type": "string",
+                    "description": "CPU resources to allocate to the oauth2-proxy sidecar container, unit is MilliCPUs (m)",
+                    "path": "oauth2Proxy.container.resources.requests.cpu",
+                    "inputType": "string",
+                    "inputDisabled": true,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": "500m",
+                    "tags": [
+                        "allocation.cpu"
+                    ]
+                },
+                {
+                    "name": "Oauth2 Proxy Memory Resource",
+                    "type": "string",
+                    "description": "Memory resources to allocate to the oauth2-proxy sidecar container, unit is Mebibytes (Mi)",
+                    "path": "oauth2Proxy.container.resources.requests.memory",
+                    "inputType": "string",
+                    "inputDisabled": true,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": "1000Mi",
+                    "tags": [
+                        "allocation.memory"
+                    ]
+                },
+                {
+                    "name": "Storage Resource",
+                    "type": "string",
+                    "description": "Storage resources to allocate to the pod, unit is Gibibytes (Gi)",
+                    "path": "persistence.size",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": false,
+                    "required": true,
+                    "value": "5Gi",
+                    "tags": []
+                },
+                {
+                    "name": "Block volume storage class",
+                    "type": "string",
+                    "description": "Kube block volume storage class",
+                    "path": "persistence.storageClass",
+                    "inputType": "string",
+                    "inputHidden": true,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "dsl-kms-block-storage-class",
+                    "tags": []
+                },
+                {
+                    "name": "Postgresql block volume storage class",
+                    "type": "string",
+                    "description": "Kube block volume storage class for Postgresql chart dependency",
+                    "path": "postgresql.persistence.storageClass",
+                    "inputType": "string",
+                    "inputHidden": true,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "dsl-kms-block-storage-class",
+                    "tags": []
+                },
+                {
+                    "name": "Postgresql Doccano Password",
+                    "type": "string",
+                    "description": "Postgresql Password for postgres user",
+                    "path": "postgresql.global.postgresql.auth.password",
+                    "inputType": "string",
+                    "inputHidden": true,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "",
+                    "tags": []
+                }
+            ]
+        },
+        {
+            "name": "doccano-large",
+            "sizingName": "Large",
+            "values": [
+                {
+                    "name": "Doccano Admin Email",
+                    "type": "string",
+                    "description": "Administrator Email for Doccano.",
+                    "path": "env.ADMIN_EMAIL",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": false,
+                    "required": true,
+                    "value": null,
+                    "tags": []
+                },
+                {
+                    "name": "Doccano Admin Username",
+                    "type": "string",
+                    "description": "Administrator Username for accessing Doccano.",
+                    "path": "env.ADMIN_USERNAME",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "admin",
+                    "tags": []
+                },
+                {
+                    "name": "Doccano Admin Password",
+                    "type": "string",
+                    "description": "Administrator Password for accessing Doccano",
+                    "path": "ADMIN_PASSWORD",
+                    "inputType": "password",
+                    "inputDisabled": true,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": null,
+                    "tags": []
+                },
+                {
+                    "name": "Permissions",
+                    "type": "string",
+                    "description": "AWS IRSA ARN for the service and all its components",
+                    "path": "serviceAccount.annotations",
+                    "inputType": "string",
+                    "inputDisabled": false,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": null,
+                    "tags": [
+                      "security.permissions"
+                    ]
+                },
+                {
+                    "name": "CPU Resource",
+                    "type": "string",
+                    "description": "CPU resources to allocate to the pod, unit is MilliCPUs (m)",
+                    "path": "resources.requests.cpu",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "4000m",
+                    "tags": [
+                        "allocation.cpu"
+                    ]
+                },
+                {
+                    "name": "Memory Resource",
+                    "type": "string",
+                    "description": "Memory resources to allocate to the pod, unit is Mebibytes (Mi)",
+                    "path": "resources.requests.memory",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "8000Mi",
+                    "tags": [
+                        "allocation.memory"
+                    ]
+                },
+                {
+                    "name": "Oauth2 Proxy CPU Resource",
+                    "type": "string",
+                    "description": "CPU resources to allocate to the oauth2-proxy sidecar container, unit is MilliCPUs (m)",
+                    "path": "oauth2Proxy.container.resources.requests.cpu",
+                    "inputType": "string",
+                    "inputDisabled": true,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": "1000m",
+                    "tags": [
+                        "allocation.cpu"
+                    ]
+                },
+                {
+                    "name": "Oauth2 Proxy Memory Resource",
+                    "type": "string",
+                    "description": "Memory resources to allocate to the oauth2-proxy sidecar container, unit is Mebibytes (Mi)",
+                    "path": "oauth2Proxy.container.resources.requests.memory",
+                    "inputType": "string",
+                    "inputDisabled": true,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": "2000Mi",
+                    "tags": [
+                        "allocation.memory"
+                    ]
+                },
+                {
+                    "name": "Storage Resource",
+                    "type": "string",
+                    "description": "Storage resources to allocate to the pod, unit is Gibibytes (Gi)",
+                    "path": "persistence.size",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": false,
+                    "required": true,
+                    "value": "5Gi",
+                    "tags": []
+                },
+                {
+                    "name": "Block volume storage class",
+                    "type": "string",
+                    "description": "Kube block volume storage class",
+                    "path": "persistence.storageClass",
+                    "inputType": "string",
+                    "inputHidden": true,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "dsl-kms-block-storage-class",
+                    "tags": []
+                },
+                {
+                    "name": "Postgresql block volume storage class",
+                    "type": "string",
+                    "description": "Kube block volume storage class for Postgresql chart dependency",
+                    "path": "postgresql.persistence.storageClass",
+                    "inputType": "string",
+                    "inputHidden": true,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "dsl-kms-block-storage-class",
+                    "tags": []
+                },
+                {
+                    "name": "Postgresql Doccano Password",
+                    "type": "string",
+                    "description": "Postgresql Password for postgres user",
+                    "path": "postgresql.global.postgresql.auth.password",
+                    "inputType": "string",
+                    "inputHidden": true,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "",
+                    "tags": []
+                }
+            ]
+        }
+    ]
+}

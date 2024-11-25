@@ -1,0 +1,508 @@
+{
+  "9.2.9": [
+    {
+      "name": "spark-custom",
+      "sizingName": "Custom",
+      "values": [
+        {
+          "name": "Permissions",
+          "type": "string",
+          "description": "AWS IRSA ARN for the service and all its components",
+          "path": "serviceAccount.annotations",
+          "inputType": "string",
+          "inputDisabled": false,
+          "inputHidden": false,
+          "required": true,
+          "value": null,
+          "tags": ["security.permissions"]
+        },
+        {
+          "name": "Master Node CPU Resources",
+          "type": "string",
+          "description": "CPU resources to allocate to the master node, unit is MilliCPUs (m)",
+          "path": "master.resources.requests.cpu",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": "m",
+          "tags": ["allocation.cpu"]
+        },
+        {
+          "name": "Master Node Memory Resources",
+          "type": "string",
+          "description": "Memory resources to allocate to the master node, unit is Mebibytes (Mi)",
+          "path": "master.resources.requests.memory",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": "Mi",
+          "tags": ["allocation.memory"]
+        },
+        {
+          "name": "Master Node Oauth2 Proxy CPU Resource",
+          "type": "string",
+          "description": "CPU resources to allocate to the master oauth2-proxy sidecar container, unit is MilliCPUs (m)",
+          "path": "oauth2Proxy.container.resources.requests.cpu",
+          "inputType": "string",
+          "inputDisabled": false,
+          "inputHidden": false,
+          "required": true,
+          "value": "m",
+          "tags": ["allocation.cpu"]
+        },
+        {
+          "name": "Master Node Oauth2 Proxy Memory Resource",
+          "type": "string",
+          "description": "Memory resources to allocate to the master oauth2-proxy sidecar container, unit is Mebibytes (Mi)",
+          "path": "oauth2Proxy.container.resources.requests.memory",
+          "inputType": "string",
+          "inputDisabled": false,
+          "inputHidden": false,
+          "required": true,
+          "value": "Mi",
+          "tags": ["allocation.memory"]
+        },
+        {
+          "name": "Worker Replicas",
+          "type": "number",
+          "description": "Number of worker nodes",
+          "path": "worker.replicaCount",
+          "inputType": "number",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": 1,
+          "tags": []
+        },
+        {
+          "name": "Worker Node CPU Resources",
+          "type": "string",
+          "description": "CPU resources to allocate to the worker node(s), unit is MilliCPUs (m)",
+          "path": "worker.resources.requests.cpu",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": "m",
+          "tags": ["allocation.cpu"]
+        },
+        {
+          "name": "Worker Node Memory Resources",
+          "type": "string",
+          "description": "Memory resources to allocate to the worker node(s), unit is Mebibytes (Mi)",
+          "path": "worker.resources.requests.memory",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": "Mi",
+          "tags": ["allocation.memory"]
+        },
+        {
+          "name": "Worker Node Oauth2 Proxy CPU Resource",
+          "type": "string",
+          "description": "CPU resources to allocate to the worker oauth2-proxy sidecar container, unit is MilliCPUs (m)",
+          "path": "oauth2Proxy.container.resources.requests.cpu",
+          "inputType": "string",
+          "inputDisabled": false,
+          "inputHidden": false,
+          "required": true,
+          "value": "m",
+          "tags": ["allocation.worker.cpu"]
+        },
+        {
+          "name": "Worker Node Oauth2 Proxy Memory Resource",
+          "type": "string",
+          "description": "Memory resources to allocate to the worker oauth2-proxy sidecar container, unit is Mebibytes (Mi)",
+          "path": "oauth2Proxy.container.resources.requests.memory",
+          "inputType": "string",
+          "inputDisabled": false,
+          "inputHidden": false,
+          "required": true,
+          "value": "Mi",
+          "tags": ["allocation.worker.memory"]
+        }
+      ]
+    },
+    {
+      "name": "spark-small",
+      "sizingName": "Small",
+      "values": [
+        {
+          "name": "Permissions",
+          "type": "string",
+          "description": "AWS IRSA ARN for the service and all its components",
+          "path": "serviceAccount.annotations",
+          "inputType": "string",
+          "inputDisabled": false,
+          "inputHidden": false,
+          "required": true,
+          "value": null,
+          "tags": ["security.permissions"]
+        },
+        {
+          "name": "Master Node CPU Resources",
+          "type": "string",
+          "description": "CPU resources to allocate to the master node, unit is MilliCPUs (m)",
+          "path": "master.resources.requests.cpu",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "3000m",
+          "tags": ["allocation.cpu"]
+        },
+        {
+          "name": "Master Node Memory Resources",
+          "type": "string",
+          "description": "Memory resources to allocate to the master node, unit is Mebibytes (Mi)",
+          "path": "master.resources.requests.memory",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "3072Mi",
+          "tags": ["allocation.memory"]
+        },
+        {
+          "name": "Master Node Oauth2 Proxy CPU Resource",
+          "type": "string",
+          "description": "CPU resources to allocate to the master oauth2-proxy sidecar container, unit is MilliCPUs (m)",
+          "path": "oauth2Proxy.container.resources.requests.cpu",
+          "inputType": "string",
+          "inputDisabled": true,
+          "inputHidden": false,
+          "required": true,
+          "value": "750m",
+          "tags": ["allocation.cpu"]
+        },
+        {
+          "name": "Master Node Oauth2 Proxy Memory Resource",
+          "type": "string",
+          "description": "Memory resources to allocate to the master oauth2-proxy sidecar container, unit is Mebibytes (Mi)",
+          "path": "oauth2Proxy.container.resources.requests.memory",
+          "inputType": "string",
+          "inputDisabled": true,
+          "inputHidden": false,
+          "required": true,
+          "value": "768Mi",
+          "tags": ["allocation.memory"]
+        },
+        {
+          "name": "Worker Replicas",
+          "type": "number",
+          "description": "Number of worker nodes",
+          "path": "worker.replicaCount",
+          "inputType": "number",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": 3,
+          "tags": []
+        },
+        {
+          "name": "Worker Node CPU Resources",
+          "type": "string",
+          "description": "CPU resources to allocate to the worker node(s), unit is MilliCPUs (m)",
+          "path": "worker.resources.requests.cpu",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "3000m",
+          "tags": ["allocation.cpu"]
+        },
+        {
+          "name": "Worker Node Memory Resources",
+          "type": "string",
+          "description": "Memory resources to allocate to the worker node(s), unit is Mebibytes (Mi)",
+          "path": "worker.resources.requests.memory",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "3072Mi",
+          "tags": ["allocation.memory"]
+        },
+        {
+          "name": "Worker Node Oauth2 Proxy CPU Resource",
+          "type": "string",
+          "description": "CPU resources to allocate to the worker oauth2-proxy sidecar container, unit is MilliCPUs (m)",
+          "path": "oauth2Proxy.container.resources.requests.cpu",
+          "inputType": "string",
+          "inputDisabled": true,
+          "inputHidden": false,
+          "required": true,
+          "value": "750m",
+          "tags": ["allocation.worker.cpu"]
+        },
+        {
+          "name": "Worker Node Oauth2 Proxy Memory Resource",
+          "type": "string",
+          "description": "Memory resources to allocate to the worker oauth2-proxy sidecar container, unit is Mebibytes (Mi)",
+          "path": "oauth2Proxy.container.resources.requests.memory",
+          "inputType": "string",
+          "inputDisabled": true,
+          "inputHidden": false,
+          "required": true,
+          "value": "768Mi",
+          "tags": ["allocation.worker.memory"]
+        }
+      ]
+    },
+    {
+      "name": "spark-medium",
+      "sizingName": "Medium",
+      "values": [
+        {
+          "name": "Permissions",
+          "type": "string",
+          "description": "AWS IRSA ARN for the service and all its components",
+          "path": "serviceAccount.annotations",
+          "inputType": "string",
+          "inputDisabled": false,
+          "inputHidden": false,
+          "required": true,
+          "value": null,
+          "tags": ["security.permissions"]
+        },
+        {
+          "name": "Master Node CPU Resources",
+          "type": "string",
+          "description": "CPU resources to allocate to the master node, unit is MilliCPUs (m)",
+          "path": "master.resources.requests.cpu",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "5000m",
+          "tags": ["allocation.cpu"]
+        },
+        {
+          "name": "Master Node Memory Resources",
+          "type": "string",
+          "description": "Memory resources to allocate to the master node, unit is Mebibytes (Mi)",
+          "path": "master.resources.requests.memory",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "5120Mi",
+          "tags": ["allocation.memory"]
+        },
+        {
+          "name": "Master Node Oauth2 Proxy CPU Resource",
+          "type": "string",
+          "description": "CPU resources to allocate to the master oauth2-proxy sidecar container, unit is MilliCPUs (m)",
+          "path": "oauth2Proxy.container.resources.requests.cpu",
+          "inputType": "string",
+          "inputDisabled": true,
+          "inputHidden": false,
+          "required": true,
+          "value": "1250m",
+          "tags": ["allocation.cpu"]
+        },
+        {
+          "name": "Master Node Oauth2 Proxy Memory Resource",
+          "type": "string",
+          "description": "Memory resources to allocate to the master oauth2-proxy sidecar container, unit is Mebibytes (Mi)",
+          "path": "oauth2Proxy.container.resources.requests.memory",
+          "inputType": "string",
+          "inputDisabled": true,
+          "inputHidden": false,
+          "required": true,
+          "value": "1280Mi",
+          "tags": ["allocation.memory"]
+        },
+        {
+          "name": "Worker Replicas",
+          "type": "number",
+          "description": "Number of worker nodes",
+          "path": "worker.replicaCount",
+          "inputType": "number",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": 4,
+          "tags": []
+        },
+        {
+          "name": "Worker Node CPU Resources",
+          "type": "string",
+          "description": "CPU resources to allocate to the worker node(s), unit is MilliCPUs (m)",
+          "path": "worker.resources.requests.cpu",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "5000m",
+          "tags": ["allocation.cpu"]
+        },
+        {
+          "name": "Worker Node Memory Resources",
+          "type": "string",
+          "description": "Memory resources to allocate to the worker node(s), unit is Mebibytes (Mi)",
+          "path": "worker.resources.requests.memory",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "5120Mi",
+          "tags": ["allocation.memory"]
+        },
+        {
+          "name": "Worker Node Oauth2 Proxy CPU Resource",
+          "type": "string",
+          "description": "CPU resources to allocate to the worker oauth2-proxy sidecar container, unit is MilliCPUs (m)",
+          "path": "oauth2Proxy.container.resources.requests.cpu",
+          "inputType": "string",
+          "inputDisabled": true,
+          "inputHidden": false,
+          "required": true,
+          "value": "1250m",
+          "tags": ["allocation.worker.cpu"]
+        },
+        {
+          "name": "Worker Node Oauth2 Proxy Memory Resource",
+          "type": "string",
+          "description": "Memory resources to allocate to the worker oauth2-proxy sidecar container, unit is Mebibytes (Mi)",
+          "path": "oauth2Proxy.container.resources.requests.memory",
+          "inputType": "string",
+          "inputDisabled": true,
+          "inputHidden": false,
+          "required": true,
+          "value": "1280Mi",
+          "tags": ["allocation.worker.memory"]
+        }
+      ]
+    },
+    {
+      "name": "spark-large",
+      "sizingName": "Large",
+      "values": [
+        {
+          "name": "Permissions",
+          "type": "string",
+          "description": "AWS IRSA ARN for the service and all its components",
+          "path": "serviceAccount.annotations",
+          "inputType": "string",
+          "inputDisabled": false,
+          "inputHidden": false,
+          "required": true,
+          "value": null,
+          "tags": ["security.permissions"]
+        },
+        {
+          "name": "Master Node CPU Resources",
+          "type": "string",
+          "description": "CPU resources to allocate to the master node, unit is MilliCPUs (m)",
+          "path": "master.resources.requests.cpu",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "7000m",
+          "tags": ["allocation.cpu"]
+        },
+        {
+          "name": "Master Node Memory Resources",
+          "type": "string",
+          "description": "Memory resources to allocate to the master node, unit is Mebibytes (Mi)",
+          "path": "master.resources.requests.memory",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "6144Mi",
+          "tags": ["allocation.memory"]
+        },
+        {
+          "name": "Master Node Oauth2 Proxy CPU Resource",
+          "type": "string",
+          "description": "CPU resources to allocate to the master oauth2-proxy sidecar container, unit is MilliCPUs (m)",
+          "path": "oauth2Proxy.container.resources.requests.cpu",
+          "inputType": "string",
+          "inputDisabled": true,
+          "inputHidden": false,
+          "required": true,
+          "value": "1750m",
+          "tags": ["allocation.cpu"]
+        },
+        {
+          "name": "Master Node Oauth2 Proxy Memory Resource",
+          "type": "string",
+          "description": "Memory resources to allocate to the master oauth2-proxy sidecar container, unit is Mebibytes (Mi)",
+          "path": "oauth2Proxy.container.resources.requests.memory",
+          "inputType": "string",
+          "inputDisabled": true,
+          "inputHidden": false,
+          "required": true,
+          "value": "1536Mi",
+          "tags": ["allocation.memory"]
+        },
+        {
+          "name": "Worker Replicas",
+          "type": "number",
+          "description": "Number of worker nodes",
+          "path": "worker.replicaCount",
+          "inputType": "number",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": 5,
+          "tags": []
+        },
+        {
+          "name": "Worker Node CPU Resources",
+          "type": "string",
+          "description": "CPU resources to allocate to the worker node(s), unit is MilliCPUs (m)",
+          "path": "worker.resources.requests.cpu",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "7000m",
+          "tags": ["allocation.cpu"]
+        },
+        {
+          "name": "Worker Node Memory Resources",
+          "type": "string",
+          "description": "Memory resources to allocate to the worker node(s), unit is Mebibytes (Mi)",
+          "path": "worker.resources.requests.memory",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "6144Mi",
+          "tags": ["allocation.memory"]
+        },
+        {
+          "name": "Worker Node Oauth2 Proxy CPU Resource",
+          "type": "string",
+          "description": "CPU resources to allocate to the worker oauth2-proxy sidecar container, unit is MilliCPUs (m)",
+          "path": "oauth2Proxy.container.resources.requests.cpu",
+          "inputType": "string",
+          "inputDisabled": true,
+          "inputHidden": false,
+          "required": true,
+          "value": "1750m",
+          "tags": ["allocation.worker.cpu"]
+        },
+        {
+          "name": "Worker Node Oauth2 Proxy Memory Resource",
+          "type": "string",
+          "description": "Memory resources to allocate to the worker oauth2-proxy sidecar container, unit is Mebibytes (Mi)",
+          "path": "oauth2Proxy.container.resources.requests.memory",
+          "inputType": "string",
+          "inputDisabled": true,
+          "inputHidden": false,
+          "required": true,
+          "value": "1536Mi",
+          "tags": ["allocation.worker.memory"]
+        }
+      ]
+    }
+  ]
+}

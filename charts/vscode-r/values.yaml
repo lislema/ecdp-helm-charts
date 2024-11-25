@@ -1,0 +1,231 @@
+# Default values for rstudio.
+
+service:
+  image:
+    version: "612470128176.dkr.ecr.eu-west-1.amazonaws.com/catalog-vscode-r-vscode-r:rel-agnostic-vscode-r-4.95.2"
+    pullPolicy: Always
+    custom:
+      enabled: false
+      version: "vscode-r"
+
+security:
+  password: ""
+  networkPolicy:
+    enabled: false
+    from:
+      - ipBlock:
+          cidr: 10.233.103.0/32
+      - ipBlock:
+          cidr: 10.233.111.0/32
+  allowlist:
+    enabled: true
+    ip: "0.0.0.0/0"
+
+init:
+  standardInit: "https://git.lab.sspcloud.fr/innovation/plateforme-onyxia/services-ressources/-/raw/master/onyxia-init.sh"
+  filename: "onyxia-init.sh"
+  personalInit: ""
+  personalInitArgs: ""
+
+s3:
+  # Specifies whether a config map should be created
+  enabled: true
+  # The name of the configmap to use.
+  # If not set and create is true, a name is generated using the fullname template
+  configMapName: ""
+  accessKeyId: ""
+  endpoint: ""
+  defaultRegion: ""
+  secretAccessKey: ""
+  sessionToken: ""
+
+vault:
+  # Specifies whether a config map should be created
+  enabled: true
+  # The name of the configmap to use.
+  # If not set and create is true, a name is generated using the fullname template
+  configMapName: ""
+  token: ""
+  url: ""
+  mount: ""
+  secret: ""
+  directory: ""
+
+git:
+  # Specifies whether a config map should be created
+  enabled: true
+  # The name of the configmap to use.
+  # If not set and create is true, a name is generated using the fullname template
+  configMapName: ""
+  name: ""
+  email: ""
+  cache: ""
+  branch: ""
+
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: 1
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+environment:
+  user: coder
+  group: coder
+
+kubernetes:
+  enable: true
+  role: "view"
+
+podAnnotations: {}
+
+podSecurityContext:
+  fsGroup: 1000
+
+securityContext:
+  {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+networking:
+  type: ClusterIP
+  user: 
+    enabled: false
+    port: 5000
+  vscode:
+    port: 80
+    containerPort: 8080
+
+ingress:
+  enabled: true
+  className: alb
+  annotations:
+    alb.ingress.kubernetes.io/group.name: vscode-group
+    alb.ingress.kubernetes.io/manage-backend-security-group-rules: "true"
+    alb.ingress.kubernetes.io/security-groups: alb-inbound-cidrs-sg
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/healthcheck-path: /ping
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}, {"HTTP":80}]'
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: "40"
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: "5"
+    alb.ingress.kubernetes.io/healthy-threshold-count: "2"
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: "2"
+  hostname: 
+  hosts:
+    - host: .example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+resources:
+  requests:
+    cpu:
+    memory:
+    storage:
+
+persistence:
+  enabled: true
+  ## database data Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  #storageClass: "dsl001-dev-network-storage-class"
+  storageClass: "dsl-kms-block-storage-class"
+  accessMode: ReadWriteOnce
+  size: 10Gi
+  existingClaim: "example-pvc-claim-name"
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector:
+  workloads: catalog
+
+affinity: {}
+
+tolerations:
+  - key: "workloads"
+    operator: "Equal"
+    value: "catalog"
+    effect: "NoSchedule"
+
+
+#This section includes user information passed by the backend API
+#Currently it only includes uuid: but may be expanded later
+#uuid uniquely represents a user in the system and passing it as
+#a label in the k8s objects allows effective filtering per user.
+userdata:
+  uuid: ""
+  releaseAlias: ""
+  sharing: "private"
+
+#
+oauth2Proxy:
+  enabled: true
+  config:
+    # clientId: "" # Deployed in K8s secret by backend
+    # clientSecret: "" # Deployed in K8s secret by backend
+    cookieName: "" # Optional, defaults to .releaseName-oauth2-proxy
+    # cookieSecret: "" # Automatically generated
+    cookieExpire: "1h0m0s"
+    cookieSecure: "true"
+    reverseProxy: "true"
+    httpAddress: "" # Optional, defaults to http://127.0.0.1:4180
+    upstream: "" # Optional, defaults to http://127.0.0.1:54321
+    provider: "keycloak-oidc"
+    # oidcIssuerUrl: https://keycloak.example.com/realms/<realm-name>" # Deployed in K8s secret by backend
+    # redirectUrl: "" # Optional, set automatically
+    codeChallengeMethod: "S256" # Recommended, defaults to S256
+    # skipProviderButton: "true" # Defaults to true
+    emailDomain: "*"
+    insecureOidcAllowUnverifiedEmail: "true"
+    # allowedRoles: ["admin", "dsl-admin"] # Deployed in K8s secret by backend
+    # allowedGroups: [] # in K8s secret by backend
+  container:
+    image:
+      # repository: quay.io/oauth2-proxy/oauth2-proxy
+      # tag: v7.6.0
+      repository: 612470128176.dkr.ecr.eu-west-1.amazonaws.com/oauth2-proxy
+      tag: rel-agnostic-oauth2-proxy-main-v7.6.0
+      pullPolicy: IfNotPresent
+    port: 4180
+    args: []
+      # - "--key=value"
+    env: []
+      # - name: name
+      #   value: value
+    resources:
+      # limits:
+      #   cpu: 250m
+      #   memory: 250Mi
+      requests:
+        cpu: 250m
+        memory: 250Mi
+
+storage:
+  efsEnabled: true
+  efsPVClaimName: ""

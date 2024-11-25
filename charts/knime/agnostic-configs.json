@@ -1,0 +1,226 @@
+{
+    "0.2.2": [
+        {
+            "name": "knime-custom",
+            "sizingName": "Custom",
+            "values": [
+                {
+                    "name": "Username (Knime 5_3_3)",
+                    "type": "string",
+                    "description": "Username for accessing Knime.",
+                    "path": "security.username",
+                    "inputType": "string",
+                    "inputDisabled": true,
+                    "inputHidden": true,
+                    "required": true,
+                    "value": "knime",
+                    "tags": []
+                },
+                {
+                    "name": "Permissions",
+                    "type": "string",
+                    "description": "AWS IRSA ARN for the service and all its components",
+                    "path": "serviceAccount.annotations",
+                    "inputType": "string",
+                    "inputDisabled": false,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": null,
+                    "tags": [
+                      "security.permissions"
+                    ]
+                },
+                {
+                    "name": "CPU Resource",
+                    "type": "string",
+                    "description": "CPU resources to allocate to the pod, unit is MilliCPUs (m)",
+                    "path": "resources.requests.cpu",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": false,
+                    "required": true,
+                    "value": "m",
+                    "tags": [
+                        "allocation.cpu"
+                    ]
+                },
+                {
+                    "name": "Memory Resource",
+                    "type": "string",
+                    "description": "Memory resources to allocate to the pod, unit is Mebibytes (Mi)",
+                    "path": "resources.requests.memory",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": false,
+                    "required": true,
+                    "value": "Mi",
+                    "tags": [
+                        "allocation.memory"
+                    ]
+                },
+                {
+                    "name": "NFS PVC name",
+                    "type": "choice",
+                    "description": "The name of the NFS storage class claim or simply the NFS id.",
+                    "path": "storage.efsPVClaimName",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": false,
+                    "required": true,
+                    "value": null,
+                    "tags": [
+                        "options.storage"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "knime-medium",
+            "sizingName": "Medium",
+            "values": [
+                {
+                    "name": "Username (Knime 5_3_3)",
+                    "type": "string",
+                    "description": "Username for accessing Knime.",
+                    "path": "security.username",
+                    "inputType": "string",
+                    "inputDisabled": true,
+                    "inputHidden": true,
+                    "required": true,
+                    "value": "knime",
+                    "tags": []
+                },
+                {
+                    "name": "Permissions",
+                    "type": "string",
+                    "description": "AWS IRSA ARN for the service and all its components",
+                    "path": "serviceAccount.annotations",
+                    "inputType": "string",
+                    "inputDisabled": false,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": null,
+                    "tags": [
+                      "security.permissions"
+                    ]
+                },
+                {
+                    "name": "CPU Resource",
+                    "type": "string",
+                    "description": "CPU resources to allocate to the pod, unit is MilliCPUs (m)",
+                    "path": "resources.requests.cpu",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "2000m",
+                    "tags": [
+                        "allocation.cpu"
+                    ]
+                },
+                {
+                    "name": "Memory Resource",
+                    "type": "string",
+                    "description": "Memory resources to allocate to the pod, unit is Mebibytes (Mi)",
+                    "path": "resources.requests.memory",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "8000Mi",
+                    "tags": [
+                        "allocation.memory"
+                    ]
+                },
+                {
+                    "name": "NFS PVC name",
+                    "type": "choice",
+                    "description": "The name of the NFS storage class claim or simply the NFS id.",
+                    "path": "storage.efsPVClaimName",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": false,
+                    "required": true,
+                    "value": null,
+                    "tags": [
+                        "options.storage"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "knime-large",
+            "sizingName": "Large",
+            "values": [
+                {
+                    "name": "Username (Knime 5_3_3)",
+                    "type": "string",
+                    "description": "Username for accessing Knime.",
+                    "path": "security.username",
+                    "inputType": "string",
+                    "inputDisabled": true,
+                    "inputHidden": true,
+                    "required": true,
+                    "value": "knime",
+                    "tags": []
+                },
+                {
+                    "name": "Permissions",
+                    "type": "string",
+                    "description": "AWS IRSA ARN for the service and all its components",
+                    "path": "serviceAccount.annotations",
+                    "inputType": "string",
+                    "inputDisabled": false,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": null,
+                    "tags": [
+                      "security.permissions"
+                    ]
+                },
+                {
+                    "name": "CPU Resource",
+                    "type": "string",
+                    "description": "CPU resources to allocate to the pod, unit is MilliCPUs (m)",
+                    "path": "resources.requests.cpu",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "4000m",
+                    "tags": [
+                        "allocation.cpu"
+                    ]
+                },
+                {
+                    "name": "Memory Resource",
+                    "type": "string",
+                    "description": "Memory resources to allocate to the pod, unit is Mebibytes (Mi)",
+                    "path": "resources.requests.memory",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "16000Mi",
+                    "tags": [
+                        "allocation.memory"
+                    ]
+                },
+                {
+                    "name": "NFS PVC name",
+                    "type": "choice",
+                    "description": "The name of the NFS storage class claim or simply the NFS id.",
+                    "path": "storage.efsPVClaimName",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": false,
+                    "required": true,
+                    "value": null,
+                    "tags": [
+                        "options.storage"
+                    ]
+                }
+            ]
+        }
+    ]
+}

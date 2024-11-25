@@ -1,0 +1,17 @@
+{{- $targetPort := .Values.oauth2Proxy.enabled | ternary .Values.oauth2Proxy.container.port .Values.service.targetPort }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "h2o-helm.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+  {{- include "h2o-helm.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  selector:
+  {{- include "h2o-helm.selectorLabels" . | nindent 4 }}
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: {{ $targetPort }}

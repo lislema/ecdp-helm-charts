@@ -1,0 +1,424 @@
+{
+    "13.18.1": [
+        {
+            "name": "mongodb-custom",
+            "sizingName": "Custom",
+            "values": [
+                {
+                    "name": "Permissions",
+                    "type": "string",
+                    "description": "AWS IRSA ARN for the service and all its components",
+                    "path": "serviceAccount.annotations",
+                    "inputType": "string",
+                    "inputDisabled": false,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": null,
+                    "tags": [
+                      "security.permissions"
+                    ]
+                },
+                {
+                    "name": "Resources cpu",
+                    "type": "string",
+                    "description": "CPU resources to allocate to the pod, unit is MilliCPUs (m)",
+                    "path": "resources.requests.cpu",
+                    "inputType": "input_string",
+                    "inputHidden": false,
+                    "inputDisabled": false,
+                    "required": true,
+                    "value": "m",
+                    "tags": [
+                        "allocation.cpu"
+                    ]
+                },
+                {
+                    "name": "Resources memory",
+                    "type": "string",
+                    "description": "Memory resources to allocate to the pod, unit is Mebibytes (Mi)",
+                    "path": "resources.requests.memory",
+                    "inputType": "input_string",
+                    "inputHidden": false,
+                    "inputDisabled": false,
+                    "required": true,
+                    "value": "Mi",
+                    "tags": [
+                        "allocation.memory"
+                    ]
+                },
+                {
+                    "name": "Admin username",
+                    "type": "string",
+                    "description": "MongoDB admin username",
+                    "path": "auth.rootUser",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": false,
+                    "required": true,
+                    "value": null,
+                    "tags": []
+                },
+                {
+                    "name": "Admin password",
+                    "type": "string",
+                    "description": "MongoDB admin password",
+                    "path": "auth.rootPassword",
+                    "inputType": "password",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": null,
+                    "tags": []
+                },
+                {
+                    "name": "Block volume storage class",
+                    "type": "string",
+                    "description": "Kube block volume storage class",
+                    "path": "global.storageClass",
+                    "inputType": "string",
+                    "inputHidden": true,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "dsl-kms-block-storage-class",
+                    "tags": []
+                }
+            ]
+        },
+        {
+            "name": "mongodb-micro",
+            "sizingName": "Micro",
+            "values": [
+                {
+                    "name": "Permissions",
+                    "type": "string",
+                    "description": "AWS IRSA ARN for the service and all its components",
+                    "path": "serviceAccount.annotations",
+                    "inputType": "string",
+                    "inputDisabled": false,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": null,
+                    "tags": [
+                      "security.permissions"
+                    ]
+                },
+                {
+                    "name": "Resources cpu",
+                    "type": "string",
+                    "description": "CPU resources to allocate to the pod, unit is MilliCPUs (m)",
+                    "path": "resources.requests.cpu",
+                    "inputType": "input_string",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "500m",
+                    "tags": [
+                        "allocation.cpu"
+                    ]
+                },
+                {
+                    "name": "Resources memory",
+                    "type": "string",
+                    "description": "Memory resources to allocate to the pod, unit is Mebibytes (Mi)",
+                    "path": "resources.requests.memory",
+                    "inputType": "input_string",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "500Mi",
+                    "tags": [
+                        "allocation.memory"
+                    ]
+                },
+                {
+                    "name": "Admin username",
+                    "type": "string",
+                    "description": "MongoDB admin username",
+                    "path": "auth.rootUser",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": false,
+                    "required": true,
+                    "value": null,
+                    "tags": []
+                },
+                {
+                    "name": "Admin password",
+                    "type": "string",
+                    "description": "MongoDB admin password",
+                    "path": "auth.rootPassword",
+                    "inputType": "password",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": null,
+                    "tags": []
+                },
+                {
+                    "name": "Block volume storage class",
+                    "type": "string",
+                    "description": "Kube block volume storage class",
+                    "path": "global.storageClass",
+                    "inputType": "string",
+                    "inputHidden": true,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "dsl-kms-block-storage-class",
+                    "tags": []
+                }
+            ]
+        },
+        {
+            "name": "mongodb-small",
+            "sizingName": "Small",
+            "values": [
+                {
+                    "name": "Permissions",
+                    "type": "string",
+                    "description": "AWS IRSA ARN for the service and all its components",
+                    "path": "serviceAccount.annotations",
+                    "inputType": "string",
+                    "inputDisabled": false,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": null,
+                    "tags": [
+                      "security.permissions"
+                    ]
+                },
+                {
+                    "name": "Resources cpu",
+                    "type": "string",
+                    "description": "CPU resources to allocate to the pod, unit is MilliCPUs (m)",
+                    "path": "resources.requests.cpu",
+                    "inputType": "input_string",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "1000m",
+                    "tags": [
+                        "allocation.cpu"
+                    ]
+                },
+                {
+                    "name": "Resources memory",
+                    "type": "string",
+                    "description": "Memory resources to allocate to the pod, unit is Mebibytes (Mi)",
+                    "path": "resources.requests.memory",
+                    "inputType": "input_string",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "2000Mi",
+                    "tags": [
+                        "allocation.memory"
+                    ]
+                },
+                {
+                    "name": "Admin username",
+                    "type": "string",
+                    "description": "MongoDB admin username",
+                    "path": "auth.rootUser",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": false,
+                    "required": true,
+                    "value": null,
+                    "tags": []
+                },
+                {
+                    "name": "Admin password",
+                    "type": "string",
+                    "description": "MongoDB admin password",
+                    "path": "auth.rootPassword",
+                    "inputType": "password",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": null,
+                    "tags": []
+                },
+                {
+                    "name": "Block volume storage class",
+                    "type": "string",
+                    "description": "Kube block volume storage class",
+                    "path": "global.storageClass",
+                    "inputType": "string",
+                    "inputHidden": true,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "dsl-kms-block-storage-class",
+                    "tags": []
+                }
+            ]
+        },
+        {
+            "name": "mongodb-medium",
+            "sizingName": "Medium",
+            "values": [
+                {
+                    "name": "Permissions",
+                    "type": "string",
+                    "description": "AWS IRSA ARN for the service and all its components",
+                    "path": "serviceAccount.annotations",
+                    "inputType": "string",
+                    "inputDisabled": false,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": null,
+                    "tags": [
+                      "security.permissions"
+                    ]
+                },
+                {
+                    "name": "Resources cpu",
+                    "type": "string",
+                    "description": "CPU resources to allocate to the pod, unit is MilliCPUs (m)",
+                    "path": "resources.requests.cpu",
+                    "inputType": "input_string",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "2000m",
+                    "tags": [
+                        "allocation.cpu"
+                    ]
+                },
+                {
+                    "name": "Resources memory",
+                    "type": "string",
+                    "description": "Memory resources to allocate to the pod, unit is Mebibytes (Mi)",
+                    "path": "resources.requests.memory",
+                    "inputType": "input_string",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "4000Mi",
+                    "tags": [
+                        "allocation.memory"
+                    ]
+                },
+                {
+                    "name": "Admin username",
+                    "type": "string",
+                    "description": "MongoDB admin username",
+                    "path": "auth.rootUser",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": false,
+                    "required": true,
+                    "value": null,
+                    "tags": []
+                },
+                {
+                    "name": "Admin password",
+                    "type": "string",
+                    "description": "MongoDB admin password",
+                    "path": "auth.rootPassword",
+                    "inputType": "password",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": null,
+                    "tags": []
+                },
+                {
+                    "name": "Block volume storage class",
+                    "type": "string",
+                    "description": "Kube block volume storage class",
+                    "path": "global.storageClass",
+                    "inputType": "string",
+                    "inputHidden": true,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "dsl-kms-block-storage-class",
+                    "tags": []
+                }
+            ]
+        },
+        {
+            "name": "mongodb-large",
+            "sizingName": "Large",
+            "values": [
+                {
+                    "name": "Permissions",
+                    "type": "string",
+                    "description": "AWS IRSA ARN for the service and all its components",
+                    "path": "serviceAccount.annotations",
+                    "inputType": "string",
+                    "inputDisabled": false,
+                    "inputHidden": false,
+                    "required": true,
+                    "value": null,
+                    "tags": [
+                      "security.permissions"
+                    ]
+                },
+                {
+                    "name": "Resources cpu",
+                    "type": "string",
+                    "description": "CPU resources to allocate to the pod, unit is MilliCPUs (m)",
+                    "path": "resources.requests.cpu",
+                    "inputType": "input_string",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "4000m",
+                    "tags": [
+                        "allocation.cpu"
+                    ]
+                },
+                {
+                    "name": "Resources memory",
+                    "type": "string",
+                    "description": "Memory resources to allocate to the pod, unit is Mebibytes (Mi)",
+                    "path": "resources.requests.memory",
+                    "inputType": "input_string",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "8000Mi",
+                    "tags": [
+                        "allocation.memory"
+                    ]
+                },
+                {
+                    "name": "Admin username",
+                    "type": "string",
+                    "description": "MongoDB admin username",
+                    "path": "auth.rootUser",
+                    "inputType": "string",
+                    "inputHidden": false,
+                    "inputDisabled": false,
+                    "required": true,
+                    "value": null,
+                    "tags": []
+                },
+                {
+                    "name": "Admin password",
+                    "type": "string",
+                    "description": "MongoDB admin password",
+                    "path": "auth.rootPassword",
+                    "inputType": "password",
+                    "inputHidden": false,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": null,
+                    "tags": []
+                },
+                {
+                    "name": "Block volume storage class",
+                    "type": "string",
+                    "description": "Kube block volume storage class",
+                    "path": "global.storageClass",
+                    "inputType": "string",
+                    "inputHidden": true,
+                    "inputDisabled": true,
+                    "required": true,
+                    "value": "dsl-kms-block-storage-class",
+                    "tags": []
+                }
+            ]
+        }
+    ]
+}

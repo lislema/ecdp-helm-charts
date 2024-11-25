@@ -1,0 +1,15 @@
+{{- $targetPort := .Values.oauth2Proxy.enabled | ternary .Values.oauth2Proxy.container.port .Values.service.targetPort }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .Release.Name }}-{{ .Values.image.name }}"
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: {{ .Values.service.targetPort }}{{ .Values.service.protocol | lower }}
+      port: {{ .Values.service.targetPort }}
+      protocol: {{ .Values.service.protocol }}
+      targetPort: {{ $targetPort }}
+  selector:
+    app: "{{ .Release.Name }}-{{ .Values.image.name }}"
+    release: {{ .Release.Name }}

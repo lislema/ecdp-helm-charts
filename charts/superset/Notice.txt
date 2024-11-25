@@ -1,0 +1,14 @@
+This product contains modifications
+(c) Copyright 2023 European Union 
+
+See License file for licensing information.
+
+=======================================================================
+
+Apache Superset
+Copyright 2016-2021 The Apache Software Foundation
+
+This product includes software developed at The Apache Software
+Foundation (http://www.apache.org/).
+
+

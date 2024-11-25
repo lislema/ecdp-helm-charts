@@ -1,0 +1,189 @@
+#This section includes user information passed by the backend API
+#Currently it only includes uuid: but may be expanded later
+#uuid uniquely represents a user in the system and passing it as
+#a label in the k8s objects allows effective filtering per user.
+userdata:
+  uuid: ""
+  releaseAlias: ""
+  sharing: "private"
+
+#
+oauth2Proxy:
+  enabled: true
+  config:
+    # clientId: "" # Deployed in K8s secret by backend
+    # clientSecret: "" # Deployed in K8s secret by backend
+    cookieName: "" # Optional, defaults to .releaseName-oauth2-proxy
+    # cookieSecret: "" # Automatically generated
+    cookieExpire: "1h0m0s"
+    cookieSecure: "true"
+    reverseProxy: "true"
+    httpAddress: "" # Optional, defaults to http://127.0.0.1:4180
+    upstream: "" # Optional, defaults to http://127.0.0.1:54321
+    provider: "keycloak-oidc"
+    # oidcIssuerUrl: https://keycloak.example.com/realms/<realm-name>" # Deployed in K8s secret by backend
+    # redirectUrl: "" # Optional, set automatically
+    codeChallengeMethod: "S256" # Recommended, defaults to S256
+    # skipProviderButton: "true" # Defaults to true
+    emailDomain: "*"
+    insecureOidcAllowUnverifiedEmail: "true"
+    # allowedRoles: ["admin", "dsl-admin"] # Deployed in K8s secret by backend
+    # allowedGroups: [] # in K8s secret by backend
+  container:
+    image:
+      # repository: quay.io/oauth2-proxy/oauth2-proxy
+      # tag: v7.6.0
+      repository: 612470128176.dkr.ecr.eu-west-1.amazonaws.com/oauth2-proxy
+      tag: rel-agnostic-oauth2-proxy-main-v7.6.0
+      pullPolicy: IfNotPresent
+    port: 4180
+    args: []
+      # - "--key=value"
+    env: []
+      # - name: name
+      #   value: value
+    resources:
+      # limits:
+      #   cpu: 250m
+      #   memory: 250Mi
+      requests:
+        cpu: 250m
+        memory: 250Mi
+
+#This section includes security configurations required by qgis
+#Currently it only includes password: which is passed to the startup
+#script executed during qgis container instantiation. More expansion
+#is needed if this script support additional security flags.
+security:
+  password: ""
+
+#This section includes additional environmental variables that can be
+#passed inside the qgis Pod. They are separated into plaintext
+#environmental variables and secrets. Secrets will need to have been
+#defined into a k8s Secret object in order for the values to be retrieved.
+environmentals:
+  plain:
+    []
+    # - name: firstenvironmental
+    #   value: firstenvironmentalvalue
+  secrets:
+    []
+    # - name: someenvironmental
+    #   key: environmentalkeyfromsecrets
+    # - name: someotherenvironemental
+    #   key: someotherenvkeyfromsecrets
+
+replicaCount: 1
+
+image:
+  repository: 612470128176.dkr.ecr.eu-west-1.amazonaws.com/catalog-qgis-qgis
+  pullPolicy: IfNotPresent
+  tag: "v3.10.4-7zip"
+
+imagePullSecrets: []
+#These override values do not participate in the current chart
+#but they have been left here as they were included in the
+#original Helm chart template - for future refference.
+nameOverride: ""
+fullnameOverride: ""
+
+#This section's values do not participate in the current chart
+#but they have been left here as they were included in the
+#original Helm chart template - for future refference.
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+#This section has been modified to reflect qgis's requirement
+#for the user and group used to run proccesses within the container of the Pod(s).
+#Whether this can be changed or configured differently is still unclear.
+podSecurityContext:
+  {}
+  # runAsUser: 0
+  # fsGroup: 100
+
+securityContext:
+  {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+
+#This section specifies the type and port of the service
+#object that will be created and connected to the qgis Pod(s)
+#It is recommended that neither type nor port are changed.
+#port2 is added to accomodate services that will set up a server (eg. ShinyDashboard)
+service:
+  type: ClusterIP
+  port: 80
+  containerPort: 80
+  port2: 5900
+
+#This section controls the ingress behavior of the Helm deployment
+#It is recommended that no value is changed unless there is a specific reason.
+ingress:
+  enabled: true
+  className: alb
+  annotations:
+    alb.ingress.kubernetes.io/group.name: qgis-group
+    alb.ingress.kubernetes.io/manage-backend-security-group-rules: "true"
+    alb.ingress.kubernetes.io/security-groups: alb-inbound-cidrs-sg
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/healthcheck-path: /ping
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}, {"HTTP":80}]'
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: "40"
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: "5"
+    alb.ingress.kubernetes.io/healthy-threshold-count: "2"
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: "2"
+  hosts:
+    - host: .example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+#This section controls the resources requests for this Helm chart deployment.
+#Fields cpu and memory apply to the container launched within EACH Pod and
+#storage applies to the PersistentVolumeClaim created by the chart to be
+#used as a persistent storage for the data of qgis.
+resources:
+  requests:
+    cpu: 2000m
+    memory: 4000Mi
+    storage: 6Gi
+
+#Comments on storage
+storage:
+  efsEnabled: true
+  efsPVClaimName: ""
+
+#This section's values do not participate in the current chart
+#but they have been left here as they were included in the
+#original Helm chart template - for future refference.
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector:
+  workloads: catalog
+
+tolerations:
+  - key: "workloads"
+    operator: "Equal"
+    value: "catalog"
+    effect: "NoSchedule"
+
+affinity: {}

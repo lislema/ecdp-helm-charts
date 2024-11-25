@@ -1,0 +1,41 @@
+{{- if .Values.ingress.enabled -}}
+{{- $fullName := include "library-chart.fullname" . -}}
+{{- $svcPort := .Values.networking.vscode.port -}}
+{{- $releaseName := .Release.Name -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "library-chart.labels" . | nindent 4 }}
+    user: {{ .Values.userdata.uuid }}
+    alias: {{ .Values.userdata.releaseAlias }}
+    sharing: {{ .Values.userdata.sharing }}
+    app.kubernetes.io/instance: {{ $releaseName }}
+  annotations:
+    {{- include "library-chart.ingress.annotations" . | nindent 4 }}
+spec:
+{{- if .Values.ingress.tls }}
+  tls:
+  {{- with (first .Values.ingress.hosts) }}
+    - hosts:
+        - "{{ $releaseName }}.{{ .host }}"
+  {{- end }}        
+{{- end }}
+  ingressClassName: {{ .Values.ingress.className}}
+  rules:
+      {{- range .Values.ingress.hosts }}
+      - host: "{{ $releaseName }}.{{ .host }}"
+        http:
+          paths:
+            {{- range .paths }}
+            - path: {{ .path }}
+              pathType: {{ .pathType }}
+              backend:
+                service:
+                  name: {{ $fullName }}
+                  port:
+                    number: {{ $svcPort }}
+            {{- end }}
+      {{- end }}
+{{- end }}

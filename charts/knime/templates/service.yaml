@@ -1,0 +1,19 @@
+{{- $targetPort := .Values.oauth2Proxy.enabled | ternary .Values.oauth2Proxy.container.port .Values.service.containerPort }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "knime.fullname" . }}
+  labels:
+    {{- include "knime.labels" . | nindent 4 }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    user: {{ .Values.userdata.uuid }}
+    alias: {{ .Values.userdata.releaseAlias }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ $targetPort }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "knime.selectorLabels" . | nindent 4 }}

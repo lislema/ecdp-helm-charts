@@ -1,0 +1,111 @@
+{{/*
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+*/}}
+
+################################
+## Airflow Webserver Ingress
+#################################
+{{- if .Values.webserver.enabled }}
+{{- if or .Values.ingress.web.enabled .Values.ingress.enabled }}
+{{- $releaseName := .Release.Name -}}
+{{- $fullname := (include "airflow.fullname" .) }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $fullname }}-ingress
+  labels:
+    tier: airflow
+    component: airflow-ingress
+    release: {{ .Release.Name }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    heritage: {{ .Release.Service }}
+    {{- if or (.Values.labels) (.Values.webserver.labels) }}
+      {{- mustMerge .Values.webserver.labels .Values.labels | toYaml | nindent 4 }}
+    {{- end }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    user: {{ .Values.userdata.uuid }}
+    alias: {{ .Values.userdata.releaseAlias }}
+  {{- with .Values.ingress.annotations }}
+  annotations: {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if and .Values.ingress.hosts (.Values.ingress.hosts | first | kindIs "string" | not) }}
+  {{- $anyTlsHosts := false -}}
+  {{- range .Values.ingress.hosts }}
+  {{- if .tls }}
+  {{- if .tls.enabled }}
+  {{- $anyTlsHosts = true -}}
+  {{- end }}
+  {{- end }}
+  {{- end }}
+  {{- if $anyTlsHosts }}
+  tls:
+  {{- range .Values.ingress.hosts }}
+  {{- if .tls }}
+  {{- if .tls.enabled }}
+    - hosts:
+        - {{ .name | quote }}
+      secretName: {{ .tls.secretName }}
+  {{- end }}
+  {{- end }}
+  {{- end }}
+  {{- end }}
+  {{- else if .Values.ingress.tls.enabled }}
+  tls:
+    - hosts:
+        {{- .Values.ingress.hosts | default (list .Values.ingress.host) | toYaml | nindent 8 }}
+      secretName: {{ .Values.ingress.tls.secretName }}
+  {{- end }}
+  rules:
+    {{- range .Values.ingress.hosts | default (list .Values.ingress.host) }}
+    - http:
+        paths:
+          {{- range $.Values.ingress.web.precedingPaths }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: {{ .serviceName }}
+                port:
+                  name: {{ .servicePort }}
+          {{- end }}
+          - backend:
+              service:
+                name: {{ $fullname }}-webserver
+                port:
+                  name: airflow-ui
+            {{- if (first (first $.Values.ingress.hosts).paths).path }}
+            path: {{ (first (first $.Values.ingress.hosts).paths).path }}
+            pathType: {{ (first (first $.Values.ingress.hosts).paths).pathType }}
+            {{- end }}
+          {{- range $.Values.ingress.web.succeedingPaths }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: {{ .serviceName }}
+                port:
+                  name: {{ .servicePort }}
+          {{- end }}
+      host: "{{ $releaseName }}.{{ (first $.Values.ingress.hosts).host }}"
+    {{- end }}
+  {{- if .Values.ingress.ingressClassName }}
+  ingressClassName: {{ .Values.ingress.ingressClassName }}
+  {{- end }}
+{{- end }}
+{{- end }}

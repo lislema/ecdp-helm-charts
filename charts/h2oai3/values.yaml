@@ -1,0 +1,192 @@
+# Default values for h2o-helm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+#This section includes user information passed by the backend API
+#Currently it only includes uuid: but may be expanded later
+#uuid uniquely represents a user in the system and passing it as
+#a label in the k8s objects allows effective filtering per user.
+userdata:
+  uuid: ""
+  releaseAlias: ""
+  sharing: "private"
+
+#This section includes additional environmental variables that can be
+#passed inside the H2O Pod. They are separated into plaintext
+#environmental variables and secrets. Secrets will need to have been
+#defined into a k8s Secret object in order for the values to be retrieved.
+environmentals:
+  plain: []
+    # - name: firstenvironmental
+    #   value: firstenvironmentalvalue
+  secrets: []
+    # - name: someenvironmental
+    #   key: environmentalkeyfromsecrets
+    # - name: someotherenvironemental
+    #   key: someotherenvkeyfromsecrets
+
+#
+oauth2Proxy:
+  enabled: true
+  config:
+    # clientId: "" # Deployed in K8s secret by backend
+    # clientSecret: "" # Deployed in K8s secret by backend
+    cookieName: "" # Optional, defaults to .releaseName-oauth2-proxy
+    # cookieSecret: "" # Automatically generated
+    cookieExpire: "1h0m0s"
+    cookieSecure: "true"
+    reverseProxy: "true"
+    httpAddress: "" # Optional, defaults to http://127.0.0.1:4180
+    upstream: "" # Optional, defaults to http://127.0.0.1:54321
+    provider: "keycloak-oidc"
+    # oidcIssuerUrl: https://keycloak.example.com/realms/<realm-name>" # Deployed in K8s secret by backend
+    # redirectUrl: "" # Optional, set automatically
+    codeChallengeMethod: "S256" # Recommended, defaults to S256
+    # skipProviderButton: "true" # Defaults to true
+    emailDomain: "*"
+    insecureOidcAllowUnverifiedEmail: "true"
+    # allowedRoles: ["admin", "dsl-admin"] # Deployed in K8s secret by backend
+    # allowedGroups: [] # in K8s secret by backend
+  container:
+    image:
+      # repository: quay.io/oauth2-proxy/oauth2-proxy
+      # tag: v7.6.0
+      repository: 612470128176.dkr.ecr.eu-west-1.amazonaws.com/oauth2-proxy
+      tag: rel-agnostic-oauth2-proxy-main-v7.6.0
+      pullPolicy: IfNotPresent
+    port: 4180
+    args: []
+      # - "--key=value"
+    env: []
+      # - name: name
+      #   value: value
+    resources:
+      # limits:
+      #   cpu: 250m
+      #   memory: 250Mi
+      requests:
+        cpu: 250m
+        memory: 250Mi
+
+image:
+  repository: ""
+  name: 612470128176.dkr.ecr.eu-west-1.amazonaws.com/catalog-h2oai3-h2oai3
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  # Default tag strategy pointed to non-existent tag (3.1.0.0)
+  tag: "rel-agnostic-46.0.6"
+  command: []
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+h2o:
+  nodeCount: 1
+  memoryPercentage: 50
+  lookupTimeout: 180 # Three minutes by default are very generous amount of time for clustering with parallel pod management
+  kubernetesApiPort: 8080
+
+nameOverride: ""
+
+fullnameOverride: ""
+
+podAnnotations: { }
+
+podLabels:
+
+podSecurityContext:
+  fsGroup: 65535
+
+securityContext:
+  runAsUser: 65535
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop: ["ALL"]
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+
+service:
+  port: 80
+  targetPort: 54321
+
+ingress:
+  enabled: true
+  className: "alb"
+  pathtype: Prefix
+  annotations:
+    alb.ingress.kubernetes.io/group.name: h2o-group
+    alb.ingress.kubernetes.io/manage-backend-security-group-rules: "true"
+    alb.ingress.kubernetes.io/security-groups: alb-inbound-cidrs-sg
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/healthcheck-path: /ping
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}, {"HTTP":80}]'
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: "40"
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: "5"
+    alb.ingress.kubernetes.io/healthy-threshold-count: "2"
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: "2"
+  kubernetes.io/ingress.class: alb
+  hosts:
+    - host: .example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  # hosts:
+  #   - host: chart-example.local
+  #     paths: [ ]
+  tls: [ ]
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+loadbalancer:
+  enabled: false
+
+# For reproducibility, H2O must always have the very same resources allocated throughout the whole container lifetime
+resources:
+  cpu: 1
+  memory: 256Mi
+
+nodeSelector:
+  workloads: catalog
+
+persistentVolume:
+  enabled: false
+  existingClaim: ""
+  storageClass: "dsl-kms-block-storage-class"
+  accessModes:
+    - ReadWriteOnce
+  size: 3Gi
+  annotations: { }
+
+# NFS storage values
+storage:
+  efsEnabled: true
+  efsPVClaimName: ""
+
+# Not used anymore
+# volumes:
+#   - name: h2o-data-storage
+#     persistentVolumeClaim:
+#       claimName: h2o-3-1234567890
+
+# Not used anymore
+# volumeMounts:
+#   - name: h2o-data-storage
+#     mountPath: /data
+
+tolerations:
+  - key: "workloads"
+    operator: "Equal"
+    value: "catalog"
+    effect: "NoSchedule"
+
+affinity: { }

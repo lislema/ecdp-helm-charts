@@ -1,0 +1,22 @@
+{{- $targetPort := .Values.oauth2Proxy.enabled | ternary .Values.oauth2Proxy.container.port .Values.networking.vscode.port }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "library-chart.fullname" . }}
+  labels:
+    {{- include "library-chart.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.networking.type }}
+  ports:
+    - port: {{ .Values.networking.vscode.port }}
+      targetPort: {{ $targetPort }}
+      protocol: TCP
+      name: http
+    {{ if .Values.networking.user.enabled }}
+    - port: {{ .Values.networking.user.port }}
+      targetPort: {{ .Values.networking.user.port }}
+      protocol: TCP
+      name: user
+    {{- end }}
+  selector:
+    {{- include "library-chart.selectorLabels" . | nindent 4 }}

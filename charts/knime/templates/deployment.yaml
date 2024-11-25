@@ -1,0 +1,181 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "knime.fullname" . }}
+  labels:
+    {{- include "knime.labels" . | nindent 4 }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    user: {{ .Values.userdata.uuid }}
+    alias: {{ .Values.userdata.releaseAlias }}
+    sharing: {{ .Values.userdata.sharing }}
+    service-catalog.ecdp.eu/metadata.service-type: {{ .Chart.Name | lower }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "knime.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "knime.selectorLabels" . | nindent 8 }}
+        service-catalog.ecdp.eu/metadata.service-type: {{ .Chart.Name | lower }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "knime.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: Europe/Brussels
+            - name: TITLE
+              value: "KNIME Analytics Platform - Webtop"
+            - name: DISABLE_IPV6
+              value: "true"
+            - name: START_DOCKER
+              value: "false"
+            - name: CUSTOM_USER
+              value: {{ .Values.security.username }}
+            - name: PASSWORD
+              value: {{ .Values.security.password }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.containerPort }}
+              protocol: TCP
+          volumeMounts:
+            - name: knime-data
+              mountPath: /config/efs-storage
+              subPath: "{{ .Values.userdata.uuid }}"
+          startupProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: 120
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds | default 0 }}
+          readinessProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds | default 0 }}
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+        {{ if .Values.oauth2Proxy.enabled }}
+        - name: oauth2-proxy
+          image: {{ .Values.oauth2Proxy.container.image.repository }}:{{ .Values.oauth2Proxy.container.image.tag }}
+          imagePullPolicy: {{ .Values.oauth2Proxy.container.image.pullPolicy }}
+          ports:
+            - name: oauth2-proxy
+              containerPort: {{ .Values.oauth2Proxy.container.port | default 4180 }}
+              protocol: TCP
+          args: {{- if not .Values.oauth2Proxy.container.args }} []
+            {{- else if .Values.oauth2Proxy.container.args }}
+            {{- toYaml .Values.oauth2Proxy.container.args | nindent 12 }}
+            {{- end}}
+          env:
+            {{- if .Values.oauth2Proxy.container.env }}
+            {{- toYaml .Values.oauth2Proxy.container.env | nindent 12 }}
+            {{- end}}
+            - name: OAUTH2_PROXY_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "knime.fullname" . }}-oidc-client
+                  key: clientID
+            - name: OAUTH2_PROXY_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "knime.fullname" . }}-oidc-client
+                  key: clientSecret
+            - name: OAUTH2_PROXY_COOKIE_NAME
+              value: {{ .Values.oauth2Proxy.config.cookieName | default (include "knime.fullname" .) }}-oauth2-proxy
+            - name: OAUTH2_PROXY_COOKIE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "knime.fullname" . }}-oauth2-proxy
+                  key: cookie-secret
+            - name: OAUTH2_PROXY_COOKIE_EXPIRE
+              value: {{ .Values.oauth2Proxy.config.cookieExpire | default "168h0m0s" | quote }}
+            - name: OAUTH2_PROXY_COOKIE_SECURE
+              value: {{ .Values.oauth2Proxy.config.cookieSecure | default "true" | quote }}
+            - name: OAUTH2_PROXY_REVERSE_PROXY
+              value: {{ .Values.oauth2Proxy.config.reverseProxy | default "true" | quote }}
+            - name: OAUTH2_PROXY_HTTP_ADDRESS
+              value: {{ (.Values.oauth2Proxy.config.httpAddress | default (printf ":%d" (int .Values.oauth2Proxy.container.port)) ) | quote }}
+            - name: OAUTH2_PROXY_UPSTREAMS
+              value: {{ .Values.oauth2Proxy.config.upstream | default (printf "http://127.0.0.1:%d" (int .Values.service.containerPort )) | quote }}
+            - name: OAUTH2_PROXY_PROVIDER
+              value: {{ .Values.oauth2Proxy.config.provider | default "keycloak-oidc" | quote }}
+            - name: OAUTH2_PROXY_OIDC_ISSUER_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "knime.fullname" . }}-oidc-client
+                  key: oidcIssuerUrl
+            - name: OAUTH2_PROXY_REDIRECT_URL
+              value: {{ .Values.oauth2Proxy.config.redirectUrl | default (printf "https://%s.%s/oauth2/callback" (include "knime.fullname" .) (index .Values.ingress.hosts 0).host) | quote }}
+            - name: OAUTH2_PROXY_CODE_CHALLENGE_METHOD
+              value: {{ .Values.oauth2Proxy.config.codeChallengeMethod | default "S256" | quote }}
+            - name: OAUTH2_PROXY_SKIP_PROVIDER_BUTTON
+              value: {{ .Values.oauth2Proxy.config.skipProviderButton | default "true" | quote }}
+            - name: OAUTH2_PROXY_EMAIL_DOMAINS
+              value: {{ .Values.oauth2Proxy.config.emailDomain | default "*" | quote }}
+            - name: OAUTH2_PROXY_INSECURE_OIDC_ALLOW_UNVERIFIED_EMAIL
+              value: {{ .Values.oauth2Proxy.config.insecureOidcAllowUnverifiedEmail | default "true" | quote }}
+            - name: OAUTH2_PROXY_ALLOWED_ROLES
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "knime.fullname" . }}-oidc-client
+                  key: allowedRoles
+            - name: OAUTH2_PROXY_ALLOWED_GROUPS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "knime.fullname" . }}-oidc-client
+                  key: allowedGroups
+          resources:
+            limits:
+              cpu: {{ .Values.oauth2Proxy.container.resources.requests.cpu }}
+              memory: {{ .Values.oauth2Proxy.container.resources.requests.memory }}
+            requests:
+              cpu: {{ .Values.oauth2Proxy.container.resources.requests.cpu }}
+              memory: {{ .Values.oauth2Proxy.container.resources.requests.memory }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+      - name: knime-data
+        persistentVolumeClaim:
+          claimName: {{ .Values.storage.efsPVClaimName }}

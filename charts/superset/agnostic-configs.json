@@ -1,0 +1,1396 @@
+{
+  "0.12.12": [
+    {
+      "name": "superset-custom",
+      "sizingName": "Custom",
+      "values": [
+        {
+          "name": "Superset Secret Key",
+          "type": "string",
+          "description": "This secret key is used by Flask for securely signing the session cookie and will be used to encrypt sensitive data on Superset metadata database",
+          "path": "extraSecretEnv.SUPERSET_SECRET_KEY",
+          "inputType": "password",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": null,
+          "tags": []
+        },  
+        {
+          "name": "Permissions",
+          "type": "string",
+          "description": "AWS IRSA ARN for the service and all its components",
+          "path": "serviceAccount.annotations",
+          "inputType": "string",
+          "inputDisabled": false,
+          "inputHidden": false,
+          "required": true,
+          "value": null,
+          "tags": [
+            "security.permissions"
+          ]
+        },
+        {
+          "name": "SupersetNode Resources cpu",
+          "type": "string",
+          "description": "CPU resources to allocate to the pod, unit is MilliCPUs (m)",
+          "path": "supersetNode.resources.requests.cpu",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": "m",
+          "tags": [
+            "allocation.cpu"
+          ]
+        },
+        {
+          "name": "SupersetNode Resources memory",
+          "type": "string",
+          "description": "Memory resources to allocate to the pod, unit is Mebibytes (Mi)",
+          "path": "supersetNode.resources.requests.memory",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": "Mi",
+          "tags": [
+            "allocation.memory"
+          ]
+        },
+        {
+          "name": "SupersetWorker Resources cpu",
+          "type": "string",
+          "description": "CPU resources to allocate to the pod, unit is MilliCPUs (m)",
+          "path": "supersetWorker.resources.requests.cpu",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": "m",
+          "tags": [
+            "allocation.cpu"
+          ]
+        },
+        {
+          "name": "SupersetWorker Resources memory",
+          "type": "string",
+          "description": "Memory resources to allocate to the pod, unit is Mebibytes (Mi)",
+          "path": "supersetWorker.resources.requests.memory",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": "Mi",
+          "tags": [
+            "allocation.memory"
+          ]
+        },
+        {
+          "name": "Init job Resources cpu",
+          "type": "string",
+          "description": "CPU resources to allocate to the pod, unit is MilliCPUs (m)",
+          "path": "init.resources.requests.cpu",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": "m",
+          "tags": [
+            "allocation.cpu"
+          ]
+        },
+        {
+          "name": "Init job Resources memory",
+          "type": "string",
+          "description": "Memory resources to allocate to the pod, unit is Mebibytes (Mi)",
+          "path": "init.resources.requests.memory",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": "Mi",
+          "tags": [
+            "allocation.memory"
+          ]
+        },
+        {
+          "name": "Redis Resources cpu",
+          "type": "string",
+          "description": "CPU resources to allocate to the redis pod, unit is MilliCPUs (m)",
+          "path": "redis.master.resources.requests.cpu",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "1000m",
+          "tags": [
+            "allocation.cpu"
+          ]
+        },
+        {
+          "name": "Redis Resources memory",
+          "type": "string",
+          "description": "Memory resources to allocate to the redis pod, unit is Mebibytes (Mi)",
+          "path": "redis.master.resources.requests.memory",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "1000Mi",
+          "tags": [
+            "allocation.memory"
+          ]
+        },
+        {
+          "name": "Redis Resources cpu limit",
+          "type": "string",
+          "description": "CPU resources limit to allocate to the redis pod, unit is MilliCPUs (m)",
+          "path": "redis.master.resources.limits.cpu",
+          "inputType": "input_string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "1000m",
+          "tags": []
+        },
+        {
+          "name": "Redis Resources memory limit",
+          "type": "string",
+          "description": "Memory resources limit to allocate to the redis pod, unit is Mebibytes (Mi)",
+          "path": "redis.master.resources.limits.memory",
+          "inputType": "input_string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "1000Mi",
+          "tags": []
+        },
+        {
+          "name": "Admin username",
+          "type": "string",
+          "description": "Superset admin username",
+          "path": "init.adminUser.username",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": null,
+          "tags": []
+        },
+        {
+          "name": "Admin password",
+          "type": "string",
+          "description": "Superset admin password",
+          "path": "init.adminUser.password",
+          "inputType": "password",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": null,
+          "tags": []
+        },
+        {
+          "name": "Admin email",
+          "type": "string",
+          "description": "Superset admin email",
+          "path": "init.adminUser.email",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": null,
+          "tags": []
+        },
+        {
+          "name": "Admin first name",
+          "type": "string",
+          "description": "Superset admin first name",
+          "path": "init.adminUser.firstname",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": null,
+          "tags": []
+        },
+        {
+          "name": "Admin last name",
+          "type": "string",
+          "description": "Superset admin last name",
+          "path": "init.adminUser.lastname",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": null,
+          "tags": []
+        },
+        {
+          "name": "MapBox API Key",
+          "type": "string",
+          "description": "MapBox API Key as secret environment variable",
+          "path": "extraSecretEnv.MAPBOX_API_KEY",
+          "inputType": "password",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": false,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "Postgresql block volume storage class",
+          "type": "string",
+          "description": "Kube block volume storage class",
+          "path": "postgresql.global.storageClass",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "dsl-kms-block-storage-class",
+          "tags": []
+        },
+        {
+          "name": "Redis block volume storage class",
+          "type": "string",
+          "description": "Kube block volume storage class",
+          "path": "redis.global.storageClass",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "dsl-kms-block-storage-class",
+          "tags": []
+        },
+        {
+          "name": "SupersetNode Redis Password",
+          "type": "string",
+          "description": "SupersetNode Redis Password",
+          "path": "supersetNode.connections.redis_password",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "SupersetNode DB Password",
+          "type": "string",
+          "description": "SupersetNode DB Password",
+          "path": "supersetNode.connections.db_pass",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "Postgresql Postgres Password",
+          "type": "string",
+          "description": "Postgresql Password for postgres user",
+          "path": "postgresql.global.postgresql.auth.postgresPassword",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "Postgresql Superset Username",
+          "type": "string",
+          "description": "Postgresql Username for custom user",
+          "path": "postgresql.global.postgresql.auth.username",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "Postgresql Superset Password",
+          "type": "string",
+          "description": "Postgresql Password for superset user",
+          "path": "postgresql.global.postgresql.auth.password",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "Postgresql Database",
+          "type": "string",
+          "description": "Postgresql Database Name",
+          "path": "postgresql.global.postgresql.auth.database",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "Redis Password",
+          "type": "string",
+          "description": "Redis Database Password",
+          "path": "redis.auth.password",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "name": "superset-small",
+      "sizingName": "Small",
+      "values": [
+        {
+          "name": "Superset Secret Key",
+          "type": "string",
+          "description": "This secret key is used by Flask for securely signing the session cookie and will be used to encrypt sensitive data on Superset metadata database",
+          "path": "extraSecretEnv.SUPERSET_SECRET_KEY",
+          "inputType": "password",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": null,
+          "tags": []
+        },
+        {
+          "name": "Permissions",
+          "type": "string",
+          "description": "AWS IRSA ARN for the service and all its components",
+          "path": "serviceAccount.annotations",
+          "inputType": "string",
+          "inputDisabled": false,
+          "inputHidden": false,
+          "required": true,
+          "value": null,
+          "tags": [
+            "security.permissions"
+          ]
+        },
+        {
+          "name": "SupersetNode Resources cpu",
+          "type": "string",
+          "description": "CPU resources to allocate to the pod, unit is MilliCPUs (m)",
+          "path": "supersetNode.resources.requests.cpu",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "1000m",
+          "tags": [
+            "allocation.cpu"
+          ]
+        },
+        {
+          "name": "SupersetNode Resources memory",
+          "type": "string",
+          "description": "Memory resources to allocate to the pod, unit is Mebibytes (Mi)",
+          "path": "supersetNode.resources.requests.memory",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "2000Mi",
+          "tags": [
+            "allocation.memory"
+          ]
+        },
+        {
+          "name": "SupersetWorker Resources cpu",
+          "type": "string",
+          "description": "CPU resources to allocate to the pod, unit is MilliCPUs (m)",
+          "path": "supersetWorker.resources.requests.cpu",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "1000m",
+          "tags": [
+            "allocation.cpu"
+          ]
+        },
+        {
+          "name": "SupersetWorker Resources memory",
+          "type": "string",
+          "description": "Memory resources to allocate to the pod, unit is Mebibytes (Mi)",
+          "path": "supersetWorker.resources.requests.memory",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "2000Mi",
+          "tags": [
+            "allocation.memory"
+          ]
+        },
+        {
+          "name": "Init job Resources cpu",
+          "type": "string",
+          "description": "CPU resources to allocate to the pod, unit is MilliCPUs (m)",
+          "path": "init.resources.requests.cpu",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "500m",
+          "tags": [
+            "allocation.cpu"
+          ]
+        },
+        {
+          "name": "Init job Resources memory",
+          "type": "string",
+          "description": "Memory resources to allocate to the pod, unit is Mebibytes (Mi)",
+          "path": "init.resources.requests.memory",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "500Mi",
+          "tags": [
+            "allocation.memory"
+          ]
+        },
+        {
+          "name": "Redis Resources cpu",
+          "type": "string",
+          "description": "CPU resources to allocate to the redis pod, unit is MilliCPUs (m)",
+          "path": "redis.master.resources.requests.cpu",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "1000m",
+          "tags": [
+            "allocation.cpu"
+          ]
+        },
+        {
+          "name": "Redis Resources memory",
+          "type": "string",
+          "description": "Memory resources to allocate to the redis pod, unit is Mebibytes (Mi)",
+          "path": "redis.master.resources.requests.memory",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "1000Mi",
+          "tags": [
+            "allocation.memory"
+          ]
+        },
+        {
+          "name": "Redis Resources cpu limit",
+          "type": "string",
+          "description": "CPU resources limit to allocate to the redis pod, unit is MilliCPUs (m)",
+          "path": "redis.master.resources.limits.cpu",
+          "inputType": "input_string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "1000m",
+          "tags": []
+        },
+        {
+          "name": "Redis Resources memory limit",
+          "type": "string",
+          "description": "Memory resources limit to allocate to the redis pod, unit is Mebibytes (Mi)",
+          "path": "redis.master.resources.limits.memory",
+          "inputType": "input_string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "1000Mi",
+          "tags": []
+        },
+        {
+          "name": "Admin username",
+          "type": "string",
+          "description": "Superset admin username",
+          "path": "init.adminUser.username",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": null,
+          "tags": []
+        },
+        {
+          "name": "Admin password",
+          "type": "string",
+          "description": "Superset admin password",
+          "path": "init.adminUser.password",
+          "inputType": "password",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": null,
+          "tags": []
+        },
+        {
+          "name": "Admin email",
+          "type": "string",
+          "description": "Superset admin email",
+          "path": "init.adminUser.email",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": null,
+          "tags": []
+        },
+        {
+          "name": "Admin first name",
+          "type": "string",
+          "description": "Superset admin first name",
+          "path": "init.adminUser.firstname",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": null,
+          "tags": []
+        },
+        {
+          "name": "Admin last name",
+          "type": "string",
+          "description": "Superset admin last name",
+          "path": "init.adminUser.lastname",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": null,
+          "tags": []
+        },
+        {
+          "name": "MapBox API Key",
+          "type": "string",
+          "description": "MapBox API Key as secret environment variable",
+          "path": "extraSecretEnv.MAPBOX_API_KEY",
+          "inputType": "password",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": false,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "Postgresql block volume storage class",
+          "type": "string",
+          "description": "Kube block volume storage class",
+          "path": "postgresql.global.storageClass",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "dsl-kms-block-storage-class",
+          "tags": []
+        },
+        {
+          "name": "Redis block volume storage class",
+          "type": "string",
+          "description": "Kube block volume storage class",
+          "path": "redis.global.storageClass",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "dsl-kms-block-storage-class",
+          "tags": []
+        },
+        {
+          "name": "SupersetNode Redis Password",
+          "type": "string",
+          "description": "SupersetNode Redis Password",
+          "path": "supersetNode.connections.redis_password",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "SupersetNode DB Password",
+          "type": "string",
+          "description": "SupersetNode DB Password",
+          "path": "supersetNode.connections.db_pass",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "Postgresql Postgres Password",
+          "type": "string",
+          "description": "Postgresql Password for postgres user",
+          "path": "postgresql.global.postgresql.auth.postgresPassword",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "Postgresql Superset Username",
+          "type": "string",
+          "description": "Postgresql Username for custom user",
+          "path": "postgresql.global.postgresql.auth.username",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "Postgresql Superset Password",
+          "type": "string",
+          "description": "Postgresql Password for superset user",
+          "path": "postgresql.global.postgresql.auth.password",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "Postgresql Database",
+          "type": "string",
+          "description": "Postgresql Database Name",
+          "path": "postgresql.global.postgresql.auth.database",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "Redis Password",
+          "type": "string",
+          "description": "Redis Database Password",
+          "path": "redis.auth.password",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "name": "superset-medium",
+      "sizingName": "Medium",
+      "values": [
+        {
+          "name": "Superset Secret Key",
+          "type": "string",
+          "description": "This secret key is used by Flask for securely signing the session cookie and will be used to encrypt sensitive data on Superset metadata database",
+          "path": "extraSecretEnv.SUPERSET_SECRET_KEY",
+          "inputType": "password",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": null,
+          "tags": []
+        },
+        {
+          "name": "Permissions",
+          "type": "string",
+          "description": "AWS IRSA ARN for the service and all its components",
+          "path": "serviceAccount.annotations",
+          "inputType": "string",
+          "inputDisabled": false,
+          "inputHidden": false,
+          "required": true,
+          "value": null,
+          "tags": [
+            "security.permissions"
+          ]
+        },
+        {
+          "name": "SupersetNode Resources cpu",
+          "type": "string",
+          "description": "CPU resources to allocate to the pod, unit is MilliCPUs (m)",
+          "path": "supersetNode.resources.requests.cpu",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "2000m",
+          "tags": [
+            "allocation.cpu"
+          ]
+        },
+        {
+          "name": "SupersetNode Resources memory",
+          "type": "string",
+          "description": "Memory resources to allocate to the pod, unit is Mebibytes (Mi)",
+          "path": "supersetNode.resources.requests.memory",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "4000Mi",
+          "tags": [
+            "allocation.memory"
+          ]
+        },
+        {
+          "name": "SupersetWorker Resources cpu",
+          "type": "string",
+          "description": "CPU resources to allocate to the pod, unit is MilliCPUs (m)",
+          "path": "supersetWorker.resources.requests.cpu",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "2000m",
+          "tags": [
+            "allocation.cpu"
+          ]
+        },
+        {
+          "name": "SupersetWorker Resources memory",
+          "type": "string",
+          "description": "Memory resources to allocate to the pod, unit is Mebibytes (Mi)",
+          "path": "supersetWorker.resources.requests.memory",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "4000Mi",
+          "tags": [
+            "allocation.memory"
+          ]
+        },
+        {
+          "name": "Init job Resources cpu",
+          "type": "string",
+          "description": "CPU resources to allocate to the pod, unit is MilliCPUs (m)",
+          "path": "init.resources.requests.cpu",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "500m",
+          "tags": [
+            "allocation.cpu"
+          ]
+        },
+        {
+          "name": "Init job Resources memory",
+          "type": "string",
+          "description": "Memory resources to allocate to the pod, unit is Mebibytes (Mi)",
+          "path": "init.resources.requests.memory",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "500Mi",
+          "tags": [
+            "allocation.memory"
+          ]
+        },
+        {
+          "name": "Redis Resources cpu",
+          "type": "string",
+          "description": "CPU resources to allocate to the redis pod, unit is MilliCPUs (m)",
+          "path": "redis.master.resources.requests.cpu",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "1000m",
+          "tags": [
+            "allocation.cpu"
+          ]
+        },
+        {
+          "name": "Redis Resources memory",
+          "type": "string",
+          "description": "Memory resources to allocate to the redis pod, unit is Mebibytes (Mi)",
+          "path": "redis.master.resources.requests.memory",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "1000Mi",
+          "tags": [
+            "allocation.memory"
+          ]
+        },
+        {
+          "name": "Redis Resources cpu limit",
+          "type": "string",
+          "description": "CPU resources limit to allocate to the redis pod, unit is MilliCPUs (m)",
+          "path": "redis.master.resources.limits.cpu",
+          "inputType": "input_string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "1000m",
+          "tags": []
+        },
+        {
+          "name": "Redis Resources memory limit",
+          "type": "string",
+          "description": "Memory resources limit to allocate to the redis pod, unit is Mebibytes (Mi)",
+          "path": "redis.master.resources.limits.memory",
+          "inputType": "input_string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "1000Mi",
+          "tags": []
+        },
+        {
+          "name": "Admin username",
+          "type": "string",
+          "description": "Superset admin username",
+          "path": "init.adminUser.username",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": null,
+          "tags": []
+        },
+        {
+          "name": "Admin password",
+          "type": "string",
+          "description": "Superset admin password",
+          "path": "init.adminUser.password",
+          "inputType": "password",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": null,
+          "tags": []
+        },
+        {
+          "name": "Admin email",
+          "type": "string",
+          "description": "Superset admin email",
+          "path": "init.adminUser.email",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": null,
+          "tags": []
+        },
+        {
+          "name": "Admin first name",
+          "type": "string",
+          "description": "Superset admin first name",
+          "path": "init.adminUser.firstname",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": null,
+          "tags": []
+        },
+        {
+          "name": "Admin last name",
+          "type": "string",
+          "description": "Superset admin last name",
+          "path": "init.adminUser.lastname",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": null,
+          "tags": []
+        },
+        {
+          "name": "MapBox API Key",
+          "type": "string",
+          "description": "MapBox API Key as secret environment variable",
+          "path": "extraSecretEnv.MAPBOX_API_KEY",
+          "inputType": "password",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": false,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "Postgresql block volume storage class",
+          "type": "string",
+          "description": "Kube block volume storage class",
+          "path": "postgresql.global.storageClass",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "dsl-kms-block-storage-class",
+          "tags": []
+        },
+        {
+          "name": "Redis block volume storage class",
+          "type": "string",
+          "description": "Kube block volume storage class",
+          "path": "redis.global.storageClass",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "dsl-kms-block-storage-class",
+          "tags": []
+        },
+        {
+          "name": "SupersetNode Redis Password",
+          "type": "string",
+          "description": "SupersetNode Redis Password",
+          "path": "supersetNode.connections.redis_password",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "SupersetNode DB Password",
+          "type": "string",
+          "description": "SupersetNode DB Password",
+          "path": "supersetNode.connections.db_pass",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "Postgresql Postgres Password",
+          "type": "string",
+          "description": "Postgresql Password for postgres user",
+          "path": "postgresql.global.postgresql.auth.postgresPassword",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "Postgresql Superset Username",
+          "type": "string",
+          "description": "Postgresql Username for custom user",
+          "path": "postgresql.global.postgresql.auth.username",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "Postgresql Superset Password",
+          "type": "string",
+          "description": "Postgresql Password for superset user",
+          "path": "postgresql.global.postgresql.auth.password",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "Postgresql Database",
+          "type": "string",
+          "description": "Postgresql Database Name",
+          "path": "postgresql.global.postgresql.auth.database",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "Redis Password",
+          "type": "string",
+          "description": "Redis Database Password",
+          "path": "redis.auth.password",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "name": "superset-large",
+      "sizingName": "Large",
+      "values": [
+        {
+          "name": "Superset Secret Key",
+          "type": "string",
+          "description": "This secret key is used by Flask for securely signing the session cookie and will be used to encrypt sensitive data on Superset metadata database",
+          "path": "extraSecretEnv.SUPERSET_SECRET_KEY",
+          "inputType": "password",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": null,
+          "tags": []
+        },
+        {
+          "name": "Permissions",
+          "type": "string",
+          "description": "AWS IRSA ARN for the service and all its components",
+          "path": "serviceAccount.annotations",
+          "inputType": "string",
+          "inputDisabled": false,
+          "inputHidden": false,
+          "required": true,
+          "value": null,
+          "tags": [
+            "security.permissions"
+          ]
+        },
+        {
+          "name": "SupersetNode Resources cpu",
+          "type": "string",
+          "description": "CPU resources to allocate to the pod, unit is MilliCPUs (m)",
+          "path": "supersetNode.resources.requests.cpu",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "4000m",
+          "tags": [
+            "allocation.cpu"
+          ]
+        },
+        {
+          "name": "SupersetNode Resources memory",
+          "type": "string",
+          "description": "Memory resources to allocate to the pod, unit is Mebibytes (Mi)",
+          "path": "supersetNode.resources.requests.memory",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "8000Mi",
+          "tags": [
+            "allocation.memory"
+          ]
+        },
+        {
+          "name": "SupersetWorker Resources cpu",
+          "type": "string",
+          "description": "CPU resources to allocate to the pod, unit is MilliCPUs (m)",
+          "path": "supersetWorker.resources.requests.cpu",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "4000m",
+          "tags": [
+            "allocation.cpu"
+          ]
+        },
+        {
+          "name": "SupersetWorker Resources memory",
+          "type": "string",
+          "description": "Memory resources to allocate to the pod, unit is Mebibytes (Mi)",
+          "path": "supersetWorker.resources.requests.memory",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "8000Mi",
+          "tags": [
+            "allocation.memory"
+          ]
+        },
+        {
+          "name": "Init job Resources cpu",
+          "type": "string",
+          "description": "CPU resources to allocate to the pod, unit is MilliCPUs (m)",
+          "path": "init.resources.requests.cpu",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "500m",
+          "tags": [
+            "allocation.cpu"
+          ]
+        },
+        {
+          "name": "Init job Resources memory",
+          "type": "string",
+          "description": "Memory resources to allocate to the pod, unit is Mebibytes (Mi)",
+          "path": "init.resources.requests.memory",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "500Mi",
+          "tags": [
+            "allocation.memory"
+          ]
+        },
+        {
+          "name": "Redis Resources cpu",
+          "type": "string",
+          "description": "CPU resources to allocate to the redis pod, unit is MilliCPUs (m)",
+          "path": "redis.master.resources.requests.cpu",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "1000m",
+          "tags": [
+            "allocation.cpu"
+          ]
+        },
+        {
+          "name": "Redis Resources memory",
+          "type": "string",
+          "description": "Memory resources to allocate to the redis pod, unit is Mebibytes (Mi)",
+          "path": "redis.master.resources.requests.memory",
+          "inputType": "input_string",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": "1000Mi",
+          "tags": [
+            "allocation.memory"
+          ]
+        },
+        {
+          "name": "Redis Resources cpu limit",
+          "type": "string",
+          "description": "CPU resources limit to allocate to the redis pod, unit is MilliCPUs (m)",
+          "path": "redis.master.resources.limits.cpu",
+          "inputType": "input_string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "1000m",
+          "tags": []
+        },
+        {
+          "name": "Redis Resources memory limit",
+          "type": "string",
+          "description": "Memory resources limit to allocate to the redis pod, unit is Mebibytes (Mi)",
+          "path": "redis.master.resources.limits.memory",
+          "inputType": "input_string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "1000Mi",
+          "tags": []
+        },
+        {
+          "name": "Admin username",
+          "type": "string",
+          "description": "Superset admin username",
+          "path": "init.adminUser.username",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": null,
+          "tags": []
+        },
+        {
+          "name": "Admin password",
+          "type": "string",
+          "description": "Superset admin password",
+          "path": "init.adminUser.password",
+          "inputType": "password",
+          "inputHidden": false,
+          "inputDisabled": true,
+          "required": true,
+          "value": null,
+          "tags": []
+        },
+        {
+          "name": "Admin email",
+          "type": "string",
+          "description": "Superset admin email",
+          "path": "init.adminUser.email",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": null,
+          "tags": []
+        },
+        {
+          "name": "Admin first name",
+          "type": "string",
+          "description": "Superset admin first name",
+          "path": "init.adminUser.firstname",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": null,
+          "tags": []
+        },
+        {
+          "name": "Admin last name",
+          "type": "string",
+          "description": "Superset admin last name",
+          "path": "init.adminUser.lastname",
+          "inputType": "string",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": true,
+          "value": null,
+          "tags": []
+        },
+        {
+          "name": "MapBox API Key",
+          "type": "string",
+          "description": "MapBox API Key as secret environment variable",
+          "path": "extraSecretEnv.MAPBOX_API_KEY",
+          "inputType": "password",
+          "inputHidden": false,
+          "inputDisabled": false,
+          "required": false,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "Postgresql block volume storage class",
+          "type": "string",
+          "description": "Kube block volume storage class",
+          "path": "postgresql.global.storageClass",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "dsl-kms-block-storage-class",
+          "tags": []
+        },
+        {
+          "name": "Redis block volume storage class",
+          "type": "string",
+          "description": "Kube block volume storage class",
+          "path": "redis.global.storageClass",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "dsl-kms-block-storage-class",
+          "tags": []
+        },
+        {
+          "name": "SupersetNode Redis Password",
+          "type": "string",
+          "description": "SupersetNode Redis Password",
+          "path": "supersetNode.connections.redis_password",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "SupersetNode DB Password",
+          "type": "string",
+          "description": "SupersetNode DB Password",
+          "path": "supersetNode.connections.db_pass",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "Postgresql Postgres Password",
+          "type": "string",
+          "description": "Postgresql Password for postgres user",
+          "path": "postgresql.global.postgresql.auth.postgresPassword",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "Postgresql Superset Username",
+          "type": "string",
+          "description": "Postgresql Username for custom user",
+          "path": "postgresql.global.postgresql.auth.username",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "Postgresql Superset Password",
+          "type": "string",
+          "description": "Postgresql Password for superset user",
+          "path": "postgresql.global.postgresql.auth.password",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "Postgresql Database",
+          "type": "string",
+          "description": "Postgresql Database Name",
+          "path": "postgresql.global.postgresql.auth.database",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        },
+        {
+          "name": "Redis Password",
+          "type": "string",
+          "description": "Redis Database Password",
+          "path": "redis.auth.password",
+          "inputType": "string",
+          "inputHidden": true,
+          "inputDisabled": true,
+          "required": true,
+          "value": "",
+          "tags": []
+        }
+      ]
+    }
+  ]
+}

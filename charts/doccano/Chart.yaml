@@ -1,0 +1,28 @@
+annotations:
+  artifacthub.io/images: |
+    - name: doccano
+      image: doccano/doccano:1.8.4
+apiVersion: v2
+appVersion: 1.8.4
+dependencies:
+- condition: postgresql.installAsDependency
+  name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 11.8.1
+description: A Helm chart for doccano, Open source text annotation tool for machine
+  learning practitioner.
+home: https://doccano.herokuapp.com/
+icon: https://raw.githubusercontent.com/doccano/doccano/master/docs/images/logo/doccano.png
+keywords:
+- annotation
+- ml
+- text
+- machine-learning
+kubeVersion: '>= 1.14.0-0'
+maintainers:
+- email: armand.leopold@curie.fr
+  name: armandleopold
+name: doccano
+sources:
+- https://github.com/doccano/doccano
+version: 2.0.11

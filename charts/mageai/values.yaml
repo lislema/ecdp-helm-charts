@@ -1,0 +1,271 @@
+# Default values for mageai.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+standaloneScheduler: false
+
+# Effective if standaloneScheduler is true
+scheduler:
+  replicaCount: 1
+  name: mageai-scheduler
+
+# Effective if standaloneScheduler is true
+webServer:
+  replicaCount: 1
+  name: mageai-webserver
+
+# Effective if standaloneScheduler is false
+standalone:
+  replicaCount: 1
+  name: mageai-standalone
+
+# Enable redis if you want more replica
+redis:
+  enabled: false
+  architecture: standalone
+  auth:
+    enabled: false
+  # Your custom redis url (make sure redis.enabled is set to false)
+  customRedisURL: ""
+
+image:
+  repository: 612470128176.dkr.ecr.eu-west-1.amazonaws.com/catalog-mageai-mageai
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "rel-agnostic-0.9.55"
+  # SHA takes precedence over tag if specified
+  sha: "sha256:2363033a8438718cbaafbe0ec7fee8420a2bacec0fa428271d8d2dd43744ad71"
+
+imagePullSecrets: []
+nameOverride: "mageai"
+fullnameOverride: "mageai"
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  fsGroup: 1000
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop: ["ALL"]
+  # readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+  seccompProfile:
+    type: RuntimeDefault 
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 6789
+  # Annotations to add to the service
+  annotations: {}
+
+# Configure extra options for containers' liveness probes
+# If not configured, the probe is enabled using the following values
+livenessProbe:
+  enabled: true
+  path: /api/status
+  port: 6789
+  initialDelaySeconds: 45
+  failureThreshold: 7
+  periodSeconds: 15
+  successThreshold: 1
+  # terminationGracePeriodSeconds:
+  timeoutSeconds: 15
+
+# Configure extra options for containers' readiness probes
+# If not configured, the probe is enabled using the following values
+readinessProbe:
+  enabled: true
+  path: /api/status
+  port: 6789
+  initialDelaySeconds: 45
+  failureThreshold: 7
+  periodSeconds: 15
+  successThreshold: 1
+  # terminationGracePeriodSeconds:
+  timeoutSeconds: 15
+
+# Custom liveness probe
+customLivenessProbe: {}
+
+# Custom readiness probe
+customReadinessProbe: {}
+
+ingress:
+  enabled: true
+  className: alb
+  annotations:
+    alb.ingress.kubernetes.io/group.name: mageai-group
+    alb.ingress.kubernetes.io/manage-backend-security-group-rules: "true"
+    alb.ingress.kubernetes.io/security-groups: alb-inbound-cidrs-sg
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/healthcheck-path: /ping
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}, {"HTTP":80}]'
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: "40"
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: "5"
+    alb.ingress.kubernetes.io/healthy-threshold-count: "2"
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: "2"
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+# resources:
+#   {}
+#   # We usually recommend not to specify default resources and to leave this as a conscious
+#   # choice for the user. This also increases chances charts run on environments with little
+#   # resources, such as Minikube. If you do want to specify resources, uncomment the following
+#   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+#   # limits:
+#   #   cpu: 100m
+#   #   memory: 128Mi
+#   # requests:
+#   #   cpu: 100m
+
+#   #   memory: 128Mi
+
+#This section controls the resources requests for this Helm chart deployment.
+#Fields cpu and memory apply to the container launched within EACH Pod and
+#storage applies to the PersistentVolumeClaim created by the chart to be
+#used as a persistent storage for the data of Jupyterlab.
+resources:
+  standalone:
+    requests:
+      cpu: 150m
+      memory: 250Mi
+      storage: 6Gi
+  webServer:
+    requests:
+      cpu: 150m
+      memory: 250Mi
+      storage: 6Gi
+  scheduler:
+    requests:
+      cpu: 150m
+      memory: 250Mi
+      storage: 6Gi
+
+storage:
+  efsEnabled: true
+  efsPVClaimName: ""
+
+nodeSelector:
+  workloads: catalog
+
+tolerations:
+  - key: "workloads"
+    operator: "Equal"
+    value: "catalog"
+    effect: "NoSchedule"
+
+affinity: {}
+
+extraVolumeMounts:
+  - name: mage-fs
+    mountPath: /home/src
+
+extraVolumes:
+  - name: mage-fs
+    hostPath:
+      path: /path/to/mage_project
+
+# config: Default configuration for mageai as environment variables. These get injected directly in the container.
+config: {}
+
+# existingSecret: Specifies an existing secret to be used as environment variables. These get injected directly in the container.
+existingSecret: ""
+
+# secrets: Default secrets for mageai as environment variables. These get injected directly in the container.
+# Consider using a secret manager first, before sourcing secrets as environment variables.
+secrets: {}
+
+input_params:
+  project_name: ""
+
+# extraEnvs: Extra environment variables
+extraEnvs:
+  - name: KUBE_NAMESPACE
+    valueFrom:
+      fieldRef:
+        fieldPath: metadata.namespace
+
+#This section includes user information passed by the backend API
+#Currently it only includes uuid: but may be expanded later
+#uuid uniquely represents a user in the system and passing it as
+#a label in the k8s objects allows effective filtering per user.
+userdata:
+  uuid: ""
+  releaseAlias: ""
+  sharing: "private"
+
+#
+oauth2Proxy:
+  enabled: true
+  config:
+    # clientId: "" # Deployed in K8s secret by backend
+    # clientSecret: "" # Deployed in K8s secret by backend
+    cookieName: "" # Optional, defaults to .releaseName-oauth2-proxy
+    # cookieSecret: "" # Automatically generated
+    cookieExpire: "1h0m0s"
+    cookieSecure: "true"
+    reverseProxy: "true"
+    httpAddress: "" # Optional, defaults to http://127.0.0.1:4180
+    upstream: "" # Optional, defaults to http://127.0.0.1:80
+    provider: "keycloak-oidc"
+    # oidcIssuerUrl: https://keycloak.example.com/realms/<realm-name>" # Deployed in K8s secret by backend
+    # redirectUrl: "" # Optional, set automatically
+    codeChallengeMethod: "S256" # Recommended, defaults to S256
+    # skipProviderButton: "true" # Defaults to true
+    emailDomain: "*"
+    insecureOidcAllowUnverifiedEmail: "true"
+    # allowedRoles: ["admin", "dsl-admin"] # Deployed in K8s secret by backend
+    # allowedGroups: [] # in K8s secret by backend
+  container:
+    image:
+      # repository: quay.io/oauth2-proxy/oauth2-proxy
+      # tag: v7.6.0
+      repository: 612470128176.dkr.ecr.eu-west-1.amazonaws.com/oauth2-proxy
+      tag: rel-agnostic-oauth2-proxy-main-v7.6.0
+      pullPolicy: IfNotPresent
+    port: 4180
+    args: []
+      # - "--key=value"
+    env: []
+      # - name: name
+      #   value: value
+    resources:
+      # limits:
+      #   cpu: 250m
+      #   memory: 250Mi
+      requests:
+        cpu: 250m
+        memory: 250Mi
+
+#This section includes security configurations required by jupyterlab
+#Currently it only icnludes password: which is passed to the startup
+#script executed during Jupyterlab container instantiation. More expansion
+#is needed if this script support additional security flags.
+security:
+  password: ""
